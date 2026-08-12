@@ -37,7 +37,8 @@ export async function POST(req: Request) {
       }
     }
 
-    const tempOrderId = "ord_" + Math.random().toString(36).substring(2, 10);
+    // Gerar UUID válido previamente para casar 1:1 o external_reference do Mercado Pago com o id da tabela no Supabase
+    const orderId = crypto.randomUUID();
 
     // 1. Criar Preferência de Checkout Pro no Mercado Pago (Link de Redirecionamento Direto)
     const preference = await createCheckoutPreference({
@@ -46,7 +47,7 @@ export async function POST(req: Request) {
       payerEmail: email,
       payerName: name,
       payerCpf: cpf,
-      orderId: tempOrderId,
+      orderId: orderId,
     });
 
     let paymentResult = {
@@ -65,7 +66,7 @@ export async function POST(req: Request) {
         payerEmail: email,
         payerName: name,
         payerCpf: cpf,
-        orderId: tempOrderId,
+        orderId: orderId,
       });
 
       if (pixPayment.qrCodePix) {
@@ -78,13 +79,12 @@ export async function POST(req: Request) {
       }
     }
 
-    let orderId = tempOrderId;
-
-    // 2. Salvar Pedido no Supabase
+    // 2. Salvar Pedido no Supabase com o UUID exato
     if (isSupabaseConfigured) {
       const { data, error } = await supabaseAdmin
         .from("orders")
         .insert({
+          id: orderId,
           customer_name: name,
           customer_email: email,
           customer_cpf: cpf,
@@ -103,8 +103,6 @@ export async function POST(req: Request) {
 
       if (error) {
         console.error("[Supabase Insert Error]:", error);
-      } else if (data) {
-        orderId = data.id;
       }
     }
 

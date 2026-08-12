@@ -51,13 +51,17 @@ export async function POST(req: Request) {
 
       // Estratégia B: Buscar por externalReference (ID do pedido salvo na preferência)
       if (!targetOrder && mpDetails.externalReference) {
-        const { data: byExt } = await supabaseAdmin
-          .from("orders")
-          .select("*")
-          .eq("id", String(mpDetails.externalReference))
-          .maybeSingle();
+        const extStr = String(mpDetails.externalReference).trim();
+        const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(extStr);
+        if (isUuid) {
+          const { data: byExt } = await supabaseAdmin
+            .from("orders")
+            .select("*")
+            .eq("id", extStr)
+            .maybeSingle();
 
-        targetOrder = byExt;
+          targetOrder = byExt;
+        }
       }
 
       // Estratégia C: Buscar pelo e-mail do comprador se ainda estiver pendente
