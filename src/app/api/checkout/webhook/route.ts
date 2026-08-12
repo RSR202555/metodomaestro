@@ -31,28 +31,60 @@ export async function POST(req: Request) {
       paymentId,
       status: mpDetails.status,
       isApproved: mpDetails.isApproved,
+      payerEmail: mpDetails.payerEmail,
+      externalReference: mpDetails.externalReference,
     });
 
     let orderId: string | null = null;
+    let targetOrder: any = null;
 
-    // 2. LOCALIZAR O PEDIDO CORRESPONDENTE NO SUPABASE
+    // 2. LOCALIZAR O PEDIDO CORRESPONDENTE NO SUPABASE COM 3 ESTRATÉGIAS DE MATCH
     if (isSupabaseConfigured) {
-      const { data: orderData } = await supabaseAdmin
+      // Estratégia A: Buscar por gateway_payment_id
+      const { data: byGateway } = await supabaseAdmin
         .from("orders")
-        .select("id, status")
+        .select("*")
         .eq("gateway_payment_id", String(paymentId))
         .maybeSingle();
 
-      if (orderData) {
-        orderId = orderData.id;
+      targetOrder = byGateway;
 
-        // 3. ATUALIZAR STATUS DO PEDIDO DE ACORDO COM O STATUS REAL DO MERCADO PAGO
+      // Estratégia B: Buscar por externalReference (ID do pedido salvo na preferência)
+      if (!targetOrder && mpDetails.externalReference) {
+        const { data: byExt } = await supabaseAdmin
+          .from("orders")
+          .select("*")
+          .eq("id", String(mpDetails.externalReference))
+          .maybeSingle();
+
+        targetOrder = byExt;
+      }
+
+      // Estratégia C: Buscar pelo e-mail do comprador se ainda estiver pendente
+      if (!targetOrder && mpDetails.payerEmail) {
+        const { data: byEmail } = await supabaseAdmin
+          .from("orders")
+          .select("*")
+          .eq("customer_email", mpDetails.payerEmail)
+          .eq("status", "pending")
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        targetOrder = byEmail;
+      }
+
+      if (targetOrder) {
+        orderId = targetOrder.id;
+
+        // 3. ATUALIZAR STATUS E ID DE PAGAMENTO DO PEDIDO
         if (mpDetails.isApproved || mpDetails.status === "approved") {
           await supabaseAdmin
             .from("orders")
             .update({
               status: "paid",
               paid_at: new Date().toISOString(),
+              gateway_payment_id: String(paymentId),
             })
             .eq("id", orderId);
         } else if (mpDetails.status === "rejected" || mpDetails.status === "cancelled") {
@@ -78,7 +110,7 @@ export async function POST(req: Request) {
       }
     }
 
-    return NextResponse.json({ received: true, status: mpDetails.status });
+    return NextResponse.json({ received: true, status: mpDetails.status, matchedOrder: orderId });
   } catch (error: any) {
     console.error("[Webhook Error]:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
