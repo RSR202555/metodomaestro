@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html class="dark scroll-smooth" lang="pt-BR" style="">
+<head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MÉTODO MAESTRO - A ELITE DO PERSONAL TRAINER</title>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#201f1f",
+                        "error": "#ffb4ab",
+                        "primary-fixed-dim": "#e9c349",
+                        "tertiary": "#d0cdcd",
+                        "on-error-container": "#ffdad6",
+                        "outline-variant": "#4d4635",
+                        "on-secondary-container": "#b4b5b5",
+                        "on-secondary": "#2f3131",
+                        "on-primary-fixed": "#241a00",
+                        "on-error": "#690005",
+                        "secondary-fixed": "#e2e2e2",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "primary": "#f2ca50",
+                        "inverse-on-surface": "#313030",
+                        "inverse-surface": "#e5e2e1",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-bright": "#3a3939",
+                        "primary-container": "#d4af37",
+                        "on-tertiary": "#313030",
+                        "surface-dim": "#131313",
+                        "surface-container-highest": "#353534",
+                        "on-surface": "#e5e2e1",
+                        "on-primary-container": "#554300",
+                        "surface-tint": "#e9c349",
+                        "surface": "#131313",
+                        "background": "#131313",
+                        "secondary-container": "#454747",
+                        "secondary": "#c6c6c7",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "outline": "#99907c",
+                        "on-primary-fixed-variant": "#574500",
+                        "on-tertiary-container": "#454544",
+                        "primary-fixed": "#ffe088",
+                        "surface-variant": "#353534",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "surface-container-high": "#2a2a2a",
+                        "tertiary-container": "#b4b2b2",
+                        "on-secondary-fixed-variant": "#454747",
+                        "on-surface-variant": "#d0c5af",
+                        "on-primary": "#3c2f00",
+                        "error-container": "#93000a",
+                        "on-background": "#e5e2e1",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "inverse-primary": "#735c00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "xl": "80px",
+                        "lg": "48px",
+                        "container-max": "1200px",
+                        "gutter": "24px",
+                        "md": "24px",
+                        "base": "8px",
+                        "sm": "12px",
+                        "safe": "env(safe-area-inset-bottom)"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "display-xl": ["Geist"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Geist"],
+                        "display-lg-mobile": ["Geist"],
+                        "display-lg": ["Geist"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600" }],
+                        "headline-md": ["32px", { "lineHeight": "1.3", "letterSpacing": "-0.02em", "fontWeight": "600" }],
+                        "display-xl": ["72px", { "lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800" }],
+                        "body-md": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-sm": ["24px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-lg-mobile": ["36px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "display-lg": ["48px", { "lineHeight": "1.2", "letterSpacing": "-0.03em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer utilities {
+            .glass-panel {
+                @apply bg-background/70 backdrop-blur-xl border border-white/10;
+            }
+            .glass-card {
+                @apply bg-[#1A1A1A] border border-white/5 backdrop-blur-md;
+            }
+            .gold-glow {
+                box-shadow: 0 0 30px rgba(212,175,55,0.15);
+            }
+            .gold-glow-hover:hover {
+                box-shadow: 0 0 40px rgba(212,175,55,0.25);
+            }
+            .pb-safe {
+                padding-bottom: env(safe-area-inset-bottom);
+            }
+            .scrollbar-hide::-webkit-scrollbar {
+                display: none;
+            }
+            .scrollbar-hide {
+                -ms-overflow-style: none;
+                scrollbar-width: none;
+            }
+        }
+    </style>
+<style>
+        body { min-height: max(884px, 100dvh); }
+        .animate-pulse-subtle { animation: pulse-subtle 3s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse-subtle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.9; transform: scale(0.98); }
+        }
+        .reveal-on-scroll {
+            opacity: 0;
+            transform: translateY(30px) scale(0.98);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+<script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            document.querySelectorAll('.reveal-on-scroll').forEach((el) => {
+                observer.observe(el);
+            });
+
+            // Accordion Logic
+            const accordions = document.querySelectorAll('.accordion-btn');
+            accordions.forEach(acc => {
+                acc.addEventListener('click', function() {
+                    const content = this.nextElementSibling;
+                    const icon = this.querySelector('.material-symbols-outlined');
+                    
+                    accordions.forEach(otherAcc => {
+                        if (otherAcc !== this) {
+                            otherAcc.classList.remove('text-primary');
+                            otherAcc.nextElementSibling.style.maxHeight = null;
+                            otherAcc.querySelector('.material-symbols-outlined').textContent = 'add';
+                            otherAcc.querySelector('.material-symbols-outlined').style.transform = 'rotate(0deg)';
+                        }
+                    });
+
+                    this.classList.toggle('text-primary');
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                        icon.textContent = 'add';
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + "px";
+                        icon.textContent = 'remove';
+                        icon.style.transform = 'rotate(180deg)';
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="top-0 w-full bg-background/80 backdrop-blur-md border-b border-white/5 shadow-2xl">
+<div class="flex items-center justify-between px-md max-w-container-max mx-auto h-14">
+<button class="scale-102 active:scale-95 transition-transform text-on-surface-variant hover:text-primary transition-colors duration-300">
+<span aria-label="Menu" class="material-symbols-outlined text-headline-sm">menu</span>
+</button>
+<h1 class="font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-container to-primary-fixed scale-102 active:scale-95 transition-transform cursor-pointer text-headline-sm font-headline-sm">MÉTODO MAESTRO</h1>
+<button class="text-on-surface hover:text-primary transition-all duration-300 scale-102 active:scale-95 transition-transform font-label-sm uppercase tracking-widest font-medium text-sm">
+            LOGIN
+        </button>
+</div>
+</header>
+<main class="">
+<!-- Hero Section -->
+<section class="relative min-h-[795px] flex flex-col items-center justify-center px-5 overflow-hidden bg-[#0A0A0A] py-6">
+<div class="absolute inset-0 z-0 opacity-30 bg-gradient-to-br from-primary-container/20 via-background to-background pointer-events-none"></div>
+<div class="relative z-10 w-full max-w-lg mx-auto flex flex-col items-center text-center reveal-on-scroll visible">
+<div class="w-full aspect-[4/5] md:aspect-video rounded-xl overflow-hidden relative glass-card group cursor-pointer mb-4">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-80 mix-blend-luminosity group-hover:mix-blend-normal" data-alt="A highly detailed, cinematic medium shot of a charismatic fitness mentor (Filipe Aquino) standing confidently in a sleek, modern, dimly lit premium studio." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCC7utqN5DS69x2EMP9jEgfnPqTkhkNztpwLpxVBMhJ-wdEIgMsYCMvjQG29tlEDbjJojdPSP8INDVUcsjyCeQAujivRxn0ipuWViiuMGxS2NI9sFVDKTMxB-Qkj3TXNxD59ol3dLKOaBZvbRbitEzTprlIXilB25rYfxSmUs6xYAX7Bsy2kGFxYSzN-9Er_qml7LTD68CHGSqmvZ71U5nqP5Yuu8tpzNb1Xe1t6PiweXmBFHwbGQlAfA">
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-20 h-20 bg-primary-container/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(212,175,55,0.4)] group-hover:scale-110 transition-transform duration-500 ease-out">
+<span class="material-symbols-outlined text-on-primary-container text-[40px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</div>
+</div>
+<div class="absolute bottom-4 left-4 right-4 flex items-center justify-between text-white z-20">
+<span class="font-label-sm text-label-sm bg-black/50 px-3 py-1 rounded-full backdrop-blur-md border border-white/10">Filipe Aquino</span>
+<span class="font-label-sm text-label-sm bg-black/50 px-3 py-1 rounded-full backdrop-blur-md border border-white/10 flex items-center gap-1"><span class="material-symbols-outlined text-[16px] text-primary" style="font-variation-settings: 'FILL' 1;">star</span> 5.0</span>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent pointer-events-none"></div>
+</div>
+<h2 class="font-display-lg-mobile text-display-lg-mobile font-bold tracking-tighter mb-4 leading-tight">
+                MÉTODO MAESTRO:<br>
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-container to-primary-fixed">A ELITE DO PERSONAL TRAINER</span>
+</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-md mx-auto mb-6">
+                A mentoria presencial definitiva para escalar seu faturamento e dominar a autoridade no mercado de alto padrão.
+            </p>
+<button class="w-full sm:w-auto bg-primary-container text-on-primary-container font-label-sm text-label-sm uppercase tracking-widest py-4 px-8 rounded-full font-bold shadow-[0_0_30px_rgba(212,175,55,0.2)] hover:shadow-[0_0_50px_rgba(212,175,55,0.4)] transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 active:scale-95 flex items-center justify-center gap-2">
+                GARANTIR MEU BILHETE
+                <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Problems Section -->
+<section class="py-xl px-5 bg-background relative border-t border-white/5">
+<div class="max-w-lg mx-auto reveal-on-scroll visible">
+<div class="text-center mb-12">
+<h3 class="font-headline-md text-headline-md font-bold mb-4 tracking-tight">O ciclo da exaustão</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Se você não está faturando o que merece, você está preso em um destes três pilares.</p>
+</div>
+<div class="grid grid-cols-1 gap-6">
+<!-- Problem Card 1 -->
+<div class="glass-card rounded-2xl p-8 hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-error-container/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="w-12 h-12 rounded-full bg-error-container/20 flex items-center justify-center mb-6 border border-error/20">
+<span class="material-symbols-outlined text-error">trending_down</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm font-semibold mb-2">Poucos alunos</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Agenda vazia e dependência de indicações aleatórias. Falta previsibilidade.</p>
+</div>
+<!-- Problem Card 2 -->
+<div class="glass-card rounded-2xl p-8 hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden group border-primary/20 gold-glow">
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center mb-6 border border-primary/30">
+<span class="material-symbols-outlined text-primary">payments</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm font-semibold mb-2">Baixo faturamento</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Cobrando menos do que vale por medo de perder o cliente para a concorrência.</p>
+</div>
+<!-- Problem Card 3 -->
+<div class="glass-card rounded-2xl p-8 hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-br from-error-container/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+<div class="w-12 h-12 rounded-full bg-error-container/20 flex items-center justify-center mb-6 border border-error/20">
+<span class="material-symbols-outlined text-error">hourglass_empty</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm font-semibold mb-2">Escravo da hora-aula</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Trabalhando 14 horas por dia, sem tempo para viver, limitado pelo relógio.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- 1. Cinematic Transition -->
+<section class="min-h-[60vh] flex items-center justify-center px-5 py-xl bg-black relative border-t border-white/5 overflow-hidden">
+<div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-primary-container/10 via-transparent to-transparent opacity-50"></div>
+<div class="max-w-3xl mx-auto text-center reveal-on-scroll relative z-10 visible">
+<h2 class="font-display-lg-mobile md:font-display-xl text-display-lg-mobile md:text-display-xl font-bold tracking-tighter leading-tight text-white mb-6">
+                O problema nunca foi falta de capacidade.
+            </h2>
+<p class="font-headline-md text-headline-md text-primary font-light">
+                O problema foi nunca terem ensinado você a construir um negócio.
+            </p>
+</div>
+</section>
+<!-- RESULTADOS Section -->
+<section class="py-xl px-5 bg-background relative border-t border-white/5 overflow-hidden">
+<div class="max-w-container-max mx-auto reveal-on-scroll visible">
+<div class="text-center mb-12">
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg font-bold tracking-tighter mb-4 text-white">Resultados que falam por si.</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mx-auto">Veja o que profissionais que confiaram no Método Maestro têm a dizer sobre a transformação em suas carreiras.</p>
+</div>
+<!-- Carousel / Slider Area -->
+<div class="hidden md:flex justify-end gap-4 mb-4"><button onclick="document.querySelector('.snap-x').scrollBy({left: -400, behavior: 'smooth'})" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined">arrow_back</span></button><button onclick="document.querySelector('.snap-x').scrollBy({left: 400, behavior: 'smooth'})" class="w-12 h-12 rounded-full border border-white/10 flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all"><span class="material-symbols-outlined">arrow_forward</span></button></div><div class="flex overflow-x-auto gap-6 pb-8 snap-x snap-mandatory scrollbar-hide -mx-5 px-5 md:mx-0 md:px-0 scroll-smooth">
+<!-- Card 1 -->
+<div class="min-w-[320px] md:min-w-[420px] glass-card rounded-2xl p-8 snap-center hover:gold-glow-hover transition-all duration-300 cursor-pointer hover:-translate-y-2">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-14 h-14 rounded-full bg-surface-variant overflow-hidden border border-white/10">
+<img alt="Student Photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxz-X3ckDo6cNQo-B_d8i8KOSRuATj8xEpyeyAACAUNq3eecAvKC_g3TnQ-CxPWUz9u9hfc7GP7udPxncKJPY0ZXSKzVmrhRNXMCQZyY7-F3qVsjYqaLLOUSFuyA05FFCMinOFt81PzFUBoGe0LpD1Qt4a_JHpm5RE6MV2-4t-yZGUKj_tPs81DNYX-vsumqrnCLpFFIE7JAah6780vRbpDQuQWK3Br9q0X6oytF5MFLP77cUtinxGeQ">
+</div>
+<div>
+<h4 class="font-bold text-white text-lg">Carlos Silva</h4>
+<p class="text-sm text-on-surface-variant">São Paulo, SP - Treinador Elite</p>
+</div>
+</div>
+<div class="flex text-primary mb-4 gap-1">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-on-surface-variant italic mb-6 text-base leading-relaxed">"A mentoria me entregou as ferramentas exatas para me posicionar como autoridade. Consegui dobrar o valor da minha hora-aula sem perder alunos e hoje atendo apenas quem valoriza meu trabalho."</p>
+<p class="text-xs text-on-surface-variant/50 uppercase tracking-wider font-semibold">Dezembro 2023</p>
+</div>
+<!-- Card 2 -->
+<div class="min-w-[320px] md:min-w-[420px] glass-card rounded-2xl p-8 snap-center hover:gold-glow-hover transition-all duration-300 cursor-pointer hover:-translate-y-2">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-14 h-14 rounded-full bg-surface-variant overflow-hidden border border-white/10">
+<img alt="Student Photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDGcbK7cUhmBTzGgFv63G3LUN5qgv4b18WtPITVwlSIhuoHk7vclVS4c30fJ2e06mNeEHlwSyhD3S2WG71p-mTz29s9sHY2BUpu9EG9lVMIdAQ7SdUi8pVIKtUw8OHOsBSrD2ixxfrsbcAlIB3D7_IA8QzGXdfywqTVUhqQO6grbYzCphqXXwNFsozMp_RiJT_g7GSnNKhV2E5pYHKqWXOIjRJ3TJrw1Z3mwnp2ZfjNy4GgTORs21aZg">
+</div>
+<div>
+<h4 class="font-bold text-white text-lg">Mariana Costa</h4>
+<p class="text-sm text-on-surface-variant">Rio de Janeiro, RJ - Consultora de Saúde</p>
+</div>
+</div>
+<div class="flex text-primary mb-4 gap-1">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-on-surface-variant italic mb-6 text-base leading-relaxed">"O Método Maestro me mostrou como escalar o faturamento através da consultoria online estruturada. Deixei de ser escrava da agenda presencial e hoje tenho liberdade."</p>
+<p class="text-xs text-on-surface-variant/50 uppercase tracking-wider font-semibold">Novembro 2023</p>
+</div>
+<!-- Card 3 -->
+<div class="min-w-[320px] md:min-w-[420px] glass-card rounded-2xl p-8 snap-center hover:gold-glow-hover transition-all duration-300 cursor-pointer hover:-translate-y-2">
+<div class="flex items-center gap-4 mb-6">
+<div class="w-14 h-14 rounded-full bg-surface-variant overflow-hidden border border-white/10">
+<img alt="Student Photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcywGg12O_9cA_kkdJ5373_p1iTEOlLJ41yFarLnNkVeqvMqOdY5P-K3FtOsrOGyzsVOHsMXaTbdy28ofSBuapTGDhODkNz6CbAKAc9ry0uyTW4Ic8_LvN8zuFaLsunHbc77rgtePaTzkaY_BU-hBc1R25Xc4t9G93WO1LKM9X5-5f6ruZyOmhj-V9fg8K9Ed_msjOTyRtOs7_7UK-NYDyHuyBcia4BJnhYiQeSz_tCbfwHT-ovIK7ZA">
+</div>
+<div>
+<h4 class="font-bold text-white text-lg">Roberto Neves</h4>
+<p class="text-sm text-on-surface-variant">Curitiba, PR - Coach Esportivo</p>
+</div>
+</div>
+<div class="flex text-primary mb-4 gap-1">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<p class="text-on-surface-variant italic mb-6 text-base leading-relaxed">"A mudança de mentalidade é absurda. Entender sobre posicionamento, vendas e entrega premium me fez faturar em um mês o que eu faturava em quatro."</p>
+<p class="text-xs text-on-surface-variant/50 uppercase tracking-wider font-semibold">Outubro 2023</p>
+</div>
+</div>
+<!-- Pagination Dots -->
+<div class="flex justify-center gap-2 mt-4 mb-16"><div onclick="document.querySelector('.snap-x').scrollTo({left: 0, behavior: 'smooth'})" class="w-3 h-3 rounded-full bg-primary cursor-pointer"></div><div onclick="document.querySelector('.snap-x').scrollTo({left: 450, behavior: 'smooth'})" class="w-3 h-3 rounded-full bg-white/20 hover:bg-white/50 transition-colors cursor-pointer"></div><div onclick="document.querySelector('.snap-x').scrollTo({left: 900, behavior: 'smooth'})" class="w-3 h-3 rounded-full bg-white/20 hover:bg-white/50 transition-colors cursor-pointer"></div></div>
+<!-- Video Area -->
+
+<!-- Masonry / Social Proof Area -->
+<div class="columns-2 md:columns-3 lg:columns-4 gap-4 space-y-4 mb-16">
+<img alt="Social Proof" class="w-full rounded-xl border border-white/10 hover:border-primary/50 transition-colors cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2RBPcZEUW3OE5D33y3mujY_WuDzpBHrUP1hGAPHw6fUhbsPXPOg3dazlzqQh0eTVqQZ4Fivfqv442UGi5P_cGdl5-r1TXw_3d51UjYzM60HXSLA6KxKlLjReoGoXSBs-ANJlcS4-as4J9-DVGUcClJnWC0TUjDweohlNUy_1KQniryZ5jL8WRAzjTeKU35-D7AEXJ7TYJbHg2qoBAP8tNCS4MfqNCUerxa8dbKTKY8Fi9NNFVGvF5_A">
+<img alt="Social Proof" class="w-full rounded-xl border border-white/10 hover:border-primary/50 transition-colors cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtCQQzyamiHK4OxtoVrNOJkGw4mWk1_ncbQaINqZmru9v7R8v9FAoL5QsKOLTFHR_fHbI3zljF4eawD0FnFlKF6c8BV-n4_MaMHiaCTqOZ0rZUP7d--8GIATIwGW1A9dMKgsByMZ4K5j7hoCQAmqgdKHxMcOWfEFt7vY9Yc7jWNYgWjXG6g1xRoLjWeHCq_c7IHR9VCf81Jh6oEMVOEIXG0n2N7ckpvuVGdFiLZxB0xDP2H--r7cAG3g">
+<img alt="Social Proof" class="w-full rounded-xl border border-white/10 hover:border-primary/50 transition-colors cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJLWhy16X2BtyJqBlDe7vKK0YaZ6tw78XhzLFGitTcRSV4fUdXPFvjMvG0YzHTJ_5HwmPFxqzRbkW0HcL2_hJtp0Htr03GA45vjNX9e8GAlCjfXCsWFsGw-VYS4-LmeD3_r070Eyx_8ZbrjZqPfhl9UgiHniuta4BmJm4oyzd1oK7E-39vZs7QpIN_46XdTyIl5hW0t8TJ24fOSnjaJY57Zdr3ZlPfgtcgWpJ21eP4w2Huj-iOW41K0w">
+<img alt="Social Proof" class="w-full rounded-xl border border-white/10 hover:border-primary/50 transition-colors cursor-zoom-in" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2Nf-FR7I53EBOa6qYLgQ-OpWeR3_FON6GxAQjy5P0sleEtIm_iFGkAKfliE5zfNK8K0K_o2B-ZDq-mqSiZUJLJV-CkQNjp87vGJLFeOSxxkBgszZ6wgtk3kthHEjd2q5kRqHnkplZVR5eFMZ3ggHkwawCZtQ6yuxoXL-hY03paCf99oEYjJxTraBWBS6_ftBzmkxRWNHqAzvRjkTk1aA4P2mSQ6jyNdHhuZi6se7GBmw8nBmi3zEw4g">
+<img alt="Social Proof" class="w-full rounded-xl border border-white/10 hover:border-primary/50 transition-colors cursor-zoom-in hidden md:block" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_UwuhtMye2KC7A-SarQ-kbAfosRkAg-BXae5LbmSZvmUHoZRF6Q_aBC5dfBc8_JU_LAg-vr5lkHfQkx3jadEsEQHs_WztoryIulMqxkUe8lzX8itUd0vjfvmdL9jG4U0BfhwQHE96JBHCgR94HdzdkpaP8jTVQjHbRHP2mfbcPnCQmPDtqhaCX4bxbA-lIZ0t0RnIEEMUx4-hQmYfEwIZsHlS2DbhgI7iPyzAztcojsYV24WfBSoblg">
+</div>
+<!-- CTA & Ribbon -->
+<div class="text-center bg-surface-container rounded-3xl p-8 border border-white/5 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-r from-primary/5 via-transparent to-primary/5"></div>
+<p class="text-primary font-bold mb-6 flex items-center justify-center gap-2 text-lg relative z-10">
+<span class="tracking-widest">★★★★★</span>
+                Centenas de profissionais já estão aplicando o Método Maestro.
+            </p>
+<button class="relative z-10 w-full sm:w-auto bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-widest py-5 px-10 rounded-full font-extrabold shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:shadow-[0_0_50px_rgba(212,175,55,0.5)] transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 active:scale-95 flex items-center justify-center gap-3 mx-auto text-base">
+                QUERO FAZER PARTE DA PRÓXIMA TURMA
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</div>
+</div>
+</section>
+<!-- FAQ Section -->
+<section class="py-xl px-5 bg-[#080808] relative border-t border-white/5 overflow-hidden">
+<div class="max-w-3xl mx-auto reveal-on-scroll visible">
+<div class="text-center mb-16">
+<h2 class="font-display-lg-mobile md:font-display-lg text-display-lg-mobile md:text-display-lg font-bold tracking-tighter mb-4 text-white">Ainda ficou alguma dúvida?</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl mx-auto">Respondemos abaixo as perguntas mais comuns antes da compra do bilhete para que você tome sua decisão com total clareza.</p>
+</div>
+<!-- Accordion Items -->
+<div class="space-y-6">
+<!-- Q1 -->
+<div class="border-b border-white/10 pb-4">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    O que é o Método Maestro?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed">
+                    O Método Maestro é a mentoria presencial definitiva focada em alavancar a carreira de Personal Trainers, ensinando estratégias de posicionamento, vendas de alto valor e construção de autoridade no mercado premium.
+                </div>
+</div>
+<!-- Q2 -->
+<div class="border-b border-white/10 pb-4">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    Como funciona a mentoria?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed">
+                    A mentoria é uma imersão completa com aulas teóricas e práticas, análise de casos, e networking qualificado. Você terá um mapa claro do que executar para escalar seus resultados logo após o evento.
+                </div>
+</div>
+<!-- Q3 -->
+<div class="border-b border-white/10 pb-4">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    A mentoria é presencial ou online?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed">
+                    A experiência principal é presencial, projetada para gerar conexão e networking de alto nível. Porém, disponibilizamos acesso a materiais de apoio online na nossa plataforma exclusiva.
+                </div>
+</div>
+<!-- Q4 -->
+<div class="border-b border-white/10 pb-4">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    Qual a duração do evento?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed">
+                    O evento tem duração de 2 dias intensos (sábado e domingo), das 09h às 19h, com intervalos estratégicos para refeições e networking.
+                </div>
+</div>
+<!-- Q5 -->
+<div class="border-b border-white/10 pb-4">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    Receberei certificado?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed">
+                    Sim, todos os participantes que concluírem a mentoria receberão um certificado de conclusão com carga horária reconhecida.
+                </div>
+</div>
+<!-- Q6 -->
+<div class="border-b border-white/10 pb-4">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    Terei acesso aos materiais?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed">
+                    Com certeza. Você terá acesso à nossa área de membros com materiais complementares, templates, planilhas e o PDF das aulas ministradas.
+                </div>
+</div>
+<!-- Q7 -->
+<div class="border-b border-white/10 pb-4">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    Os bônus estão inclusos?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed">
+                    Sim, todos os bônus descritos na oferta oficial são destravados imediatamente ou entregues presencialmente conforme as regras da turma.
+                </div>
+</div>
+<!-- Q8 -->
+<div class="border-b border-white/10 pb-4">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    Posso parcelar?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed">
+                    Sim, o pagamento pode ser parcelado em até 12x no cartão de crédito, com as taxas da plataforma informadas no checkout.
+                </div>
+</div>
+<!-- Q9 -->
+<div class="border-b border-white/10 pb-4">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    Quais formas de pagamento são aceitas?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed">
+                    Aceitamos Cartão de Crédito, PIX e Boleto Bancário (apenas à vista para boleto).
+                </div>
+</div>
+<!-- Q10 -->
+<div class="border-b border-white/10 pb-4">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    Como funciona o lote atual?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed">
+                    As vendas funcionam por lotes com quantidades limitadas de ingressos. Assim que um lote esgota, o próximo é iniciado automaticamente com o valor reajustado.
+                </div>
+</div>
+<!-- Q11 -->
+<div class="border-b border-white/10 pb-4">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    O valor aumenta quando virar o lote?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed">
+                    Sim. Recomendamos fortemente garantir seu bilhete no lote atual para aproveitar as melhores condições financeiras, pois não garantimos manutenção do preço.
+                </div>
+</div>
+<!-- Q12 -->
+<div class="border-b border-white/10 pb-4">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    Posso transferir meu ingresso?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed">
+                    A transferência de titularidade é permitida até 7 dias antes do evento, devendo ser solicitada e validada junto ao nosso suporte oficial.
+                </div>
+</div>
+<!-- Q13 -->
+<div class="border-b border-white/10 pb-4">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    Existe política de cancelamento?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed">
+                    Sim, respeitamos o Código de Defesa do Consumidor e oferecemos garantia incondicional de 7 dias após a compra para devolução integral do valor investido.
+                </div>
+</div>
+<!-- Q14 -->
+<div class="border-b border-white/10 pb-4">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    Como receberei meu ingresso?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed">
+                    Após a aprovação do pagamento, você receberá um e-mail com todas as instruções e o QR Code que servirá como seu bilhete de acesso ao evento.
+                </div>
+</div>
+<!-- Q15 -->
+<div class="border-b border-white/10 pb-0">
+<button class="accordion-btn w-full flex items-center justify-between text-left py-2 hover:text-primary transition-colors text-white text-lg font-semibold outline-none group">
+                    Como entro no grupo exclusivo?
+                    <span class="material-symbols-outlined text-white/50 group-hover:text-primary transition-transform duration-300">add</span>
+</button>
+<div class="accordion-content text-on-surface-variant mt-2 text-base leading-relaxed pb-4">
+                    Dentro da plataforma onde o seu ingresso é hospedado, haverá um link oficial para ingressar no nosso grupo silencioso de avisos no WhatsApp.
+                </div>
+</div>
+</div>
+<!-- Help Block -->
+<div class="mt-16 glass-card rounded-3xl p-10 text-center border-primary/20 gold-glow relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent"></div>
+<div class="relative z-10">
+<div class="w-16 h-16 bg-surface-container rounded-full flex items-center justify-center mx-auto mb-6 border border-white/10">
+<span class="material-symbols-outlined text-primary text-3xl">support_agent</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm font-bold mb-3 text-white">Ainda precisa de ajuda?</h3>
+<p class="text-on-surface-variant mb-8 text-lg">Nossa equipe está pronta para esclarecer qualquer dúvida antes da sua inscrição.</p>
+<button class="w-full sm:w-auto bg-[#25D366] text-white font-label-sm text-label-sm uppercase tracking-widest py-4 px-8 rounded-full font-bold shadow-[0_0_30px_rgba(37,211,102,0.3)] hover:shadow-[0_0_50px_rgba(37,211,102,0.5)] transition-all duration-300 transform hover:-translate-y-1 active:translate-y-0 active:scale-95 flex items-center justify-center gap-3 mx-auto text-base">
+<span class="material-symbols-outlined">chat</span>
+                    FALAR COM A EQUIPE
+                </button>
+</div>
+</div>
+</div>
+</section>
+<!-- 16. Final CTA -->
+<section class="min-h-screen flex flex-col items-center justify-center px-5 py-xl bg-[#050505] relative border-t border-primary/20 overflow-hidden">
+<div class="absolute inset-0 z-0 opacity-40 bg-gradient-to-t from-primary/10 via-black to-black pointer-events-none"></div>
+<div class="relative z-10 w-full max-w-2xl mx-auto text-center reveal-on-scroll visible">
+<div class="w-40 h-40 mx-auto rounded-full overflow-hidden mb-8 border-4 border-primary/30 gold-glow">
+<img alt="Filipe Aquino" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuuudjj-DSORWv4XLEB8sCaOJPZ194uKPeoIJ-Osi1wEGvb9PbJPrcAhjy3vC5YE5dmT0KUkQHoLZnH1U0d_7DXSVGPoV_Sn3qswWTJ-0INPBi4a0rEZjW5TJ-siI4UrPFbqGTjLf2KvDqvO4Jva4C44w_bxDSWTH0cnvxuWW52D58UouTuvlM64YUVuKkeFm1Demb_R8ttVv_Oyos-K2iv9p5ZMdAPU8kGFERrqoiZg8zeLxJDUBixQ">
+</div>
+<h2 class="font-display-lg md:font-display-xl text-display-lg md:text-display-xl font-bold tracking-tighter mb-6 text-white">
+                A HORA DA VIRADA É <span class="text-primary">AGORA</span>.
+            </h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-12 max-w-xl mx-auto">
+                Deixe de ser apenas mais um no mercado e junte-se à elite dos Personal Trainers. As vagas são limitadíssimas e o próximo lote terá um reajuste agressivo.
+            </p>
+<button class="w-full md:w-auto bg-primary text-on-primary font-label-sm text-label-sm uppercase tracking-widest py-6 px-12 rounded-full font-extrabold shadow-[0_0_40px_rgba(212,175,55,0.4)] hover:shadow-[0_0_60px_rgba(212,175,55,0.6)] transition-all duration-300 transform hover:-translate-y-2 active:translate-y-0 active:scale-95 flex items-center justify-center gap-3 text-lg">
+                GARANTIR MINHA VAGA IMEDIATAMENTE
+                <span class="material-symbols-outlined text-[24px]">rocket_launch</span>
+</button>
+<p class="mt-6 text-on-surface-variant text-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm text-green-500">lock</span> Compra 100% Segura e Garantida
+            </p>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-background/80 backdrop-blur-lg border-t border-primary/20 shadow-[0_-10px_40px_rgba(212,175,55,0.15)] flex justify-around items-center h-24 px-md pb-safe">
+<button class="bg-primary text-on-primary rounded-full px-6 py-2 font-label-sm text-label-sm font-bold shadow-[0_0_20px_rgba(212,175,55,0.3)] flex flex-col items-center justify-center gap-1 animate-pulse-subtle w-full max-w-[200px]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">confirmation_number</span>
+<span class="">Garantir Meu Bilhete</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors flex flex-col items-center justify-center gap-1 font-label-sm text-label-sm">
+<span class="material-symbols-outlined">support_agent</span>
+<span class="">Suporte</span>
+</button>
+</nav>
+</body>
+</html>
