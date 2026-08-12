@@ -18,21 +18,31 @@ export async function GET() {
       // Auto-verificar pedidos pendentes no Mercado Pago
       const updatedOrders = await Promise.all(
         data.map(async (order) => {
-          if (
-            (order.status === "pending" || order.status === "in_process") &&
-            order.gateway_payment_id
-          ) {
+          if (order.status === "pending" || order.status === "in_process") {
             try {
-              const mpDetails = await getPaymentDetails(order.gateway_payment_id);
+              let mpDetails = await getPaymentDetails(order.gateway_payment_id || order.id);
+
+              if (!mpDetails.isApproved && order.id) {
+                const searchRes = await getPaymentDetails(order.id);
+                if (searchRes.isApproved) {
+                  mpDetails = searchRes;
+                }
+              }
+
               if (mpDetails.isApproved || mpDetails.status === "approved") {
                 const nowIso = new Date().toISOString();
+                const updateData: any = { status: "paid", paid_at: nowIso };
+                if (mpDetails.id) {
+                  updateData.gateway_payment_id = mpDetails.id;
+                }
+
                 await supabaseAdmin
                   .from("orders")
-                  .update({ status: "paid", paid_at: nowIso })
+                  .update(updateData)
                   .eq("id", order.id);
 
                 await issueTicketForOrder(order.id);
-                return { ...order, status: "paid", paid_at: nowIso };
+                return { ...order, ...updateData, status: "paid", paid_at: nowIso };
               }
             } catch (e) {
               console.warn(`[Admin AutoVerify Warning]: Order ${order.id}:`, e);

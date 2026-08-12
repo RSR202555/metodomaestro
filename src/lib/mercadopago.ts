@@ -144,8 +144,7 @@ export async function createPixPayment(params: PaymentParams) {
 }
 
 /**
- * Consulta a API do Mercado Pago para obter o status real e verificado de um pagamento.
- * Evita confiar unicamente nos dados do payload inicial do webhook.
+ * Consulta a API do Mercado Pago para obter o status real e verificado de um pagamento por ID ou por external_reference.
  */
 export async function getPaymentDetails(paymentId: string | number) {
   const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN || "";
@@ -155,27 +154,32 @@ export async function getPaymentDetails(paymentId: string | number) {
 
   const cleanId = String(paymentId || "").trim();
 
-  if (
-    isMercadoPagoConfigured &&
-    cleanId &&
-    !cleanId.startsWith("mp_sim_") &&
-    !cleanId.includes("-")
-  ) {
+  if (isMercadoPagoConfigured && cleanId && !cleanId.startsWith("mp_sim_")) {
     try {
       const client = new MercadoPagoConfig({ accessToken });
       const payment = new Payment(client);
-      const response = await payment.get({ id: cleanId });
 
-      console.log(`[MercadoPago GetPayment Success]: ID: ${response.id}, Status: ${response.status}`);
-      return {
-        id: String(response.id),
-        status: response.status || "pending",
-        statusDetail: response.status_detail,
-        payerEmail: response.payer?.email,
-        externalReference: response.external_reference,
-        transactionAmount: response.transaction_amount,
-        isApproved: response.status === "approved",
-      };
+      // Se for ID de pagamento numérico
+      if (!cleanId.includes("-")) {
+        const response = await payment.get({ id: cleanId });
+
+        console.log(`[MercadoPago GetPayment Success]: ID: ${response.id}, Status: ${response.status}`);
+        return {
+          id: String(response.id),
+          status: response.status || "pending",
+          statusDetail: response.status_detail,
+          payerEmail: response.payer?.email,
+          externalReference: response.external_reference,
+          transactionAmount: response.transaction_amount,
+          isApproved: response.status === "approved",
+        };
+      } else {
+        // Se for um UUID / external_reference ou preference_id, buscar via search
+        const searchResult = await searchPaymentByExternalReference(cleanId);
+        if (searchResult.id) {
+          return searchResult;
+        }
+      }
     } catch (error: any) {
       console.error("[MercadoPago GetPayment Error]:", error?.message || error);
     }
@@ -183,6 +187,54 @@ export async function getPaymentDetails(paymentId: string | number) {
 
   return {
     id: cleanId,
+    status: "pending",
+    statusDetail: "pending",
+    isApproved: false,
+  };
+}
+
+/**
+ * Busca na API do Mercado Pago por pagamentos vinculados a um external_reference (orderId)
+ */
+export async function searchPaymentByExternalReference(externalReference: string) {
+  const accessToken = process.env.MERCADOPAGO_ACCESS_TOKEN || "";
+  const isMercadoPagoConfigured = Boolean(
+    accessToken && !accessToken.includes("placeholder")
+  );
+
+  const cleanRef = String(externalReference || "").trim();
+
+  if (isMercadoPagoConfigured && cleanRef) {
+    try {
+      const client = new MercadoPagoConfig({ accessToken });
+      const payment = new Payment(client);
+      const searchRes = await payment.search({
+        options: {
+          external_reference: cleanRef,
+        },
+      });
+
+      if (searchRes.results && searchRes.results.length > 0) {
+        const approvedPayment = searchRes.results.find((p) => p.status === "approved");
+        const latestPayment = approvedPayment || searchRes.results[0];
+        console.log(`[MercadoPago Search Success]: Ref: ${cleanRef}, Approved: ${Boolean(approvedPayment)}, Status: ${latestPayment.status}`);
+        return {
+          id: String(latestPayment.id),
+          status: latestPayment.status || "pending",
+          statusDetail: latestPayment.status_detail,
+          payerEmail: latestPayment.payer?.email,
+          externalReference: latestPayment.external_reference,
+          transactionAmount: latestPayment.transaction_amount,
+          isApproved: Boolean(approvedPayment),
+        };
+      }
+    } catch (error: any) {
+      console.error("[MercadoPago Search Error]:", error?.message || error);
+    }
+  }
+
+  return {
+    id: "",
     status: "pending",
     statusDetail: "pending",
     isApproved: false,

@@ -64,9 +64,17 @@ export async function GET(req: Request) {
     }
 
     // VERIFICAÇÃO AUTOMÁTICA EM TEMPO REAL NO MERCADO PAGO SE O PEDIDO AINDA CONSTAR COMO PENDENTE
-    if (order.status !== "paid" && order.status !== "approved" && order.gateway_payment_id) {
+    if (order.status !== "paid" && order.status !== "approved") {
       try {
-        const mpDetails = await getPaymentDetails(order.gateway_payment_id);
+        let mpDetails = await getPaymentDetails(order.gateway_payment_id || order.id);
+
+        if (!mpDetails.isApproved && order.id) {
+          const searchRes = await getPaymentDetails(order.id);
+          if (searchRes.isApproved) {
+            mpDetails = searchRes;
+          }
+        }
+
         if (mpDetails.isApproved || mpDetails.status === "approved") {
           console.log(`[AutoVerify Order Paid]: Pedido ${order.id} aprovado via MP API.`);
           const nowIso = new Date().toISOString();
@@ -74,9 +82,14 @@ export async function GET(req: Request) {
           order.paid_at = nowIso;
 
           if (isSupabaseConfigured) {
+            const updatePayload: any = { status: "paid", paid_at: nowIso };
+            if (mpDetails.id) {
+              updatePayload.gateway_payment_id = mpDetails.id;
+            }
+
             await supabaseAdmin
               .from("orders")
-              .update({ status: "paid", paid_at: nowIso })
+              .update(updatePayload)
               .eq("id", order.id);
           }
 
