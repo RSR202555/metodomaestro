@@ -37,6 +37,8 @@ export async function POST(req: Request) {
       }
     }
 
+    const tempOrderId = "ord_" + Math.random().toString(36).substring(2, 10);
+
     // 1. Criar Preferência de Checkout Pro no Mercado Pago (Link de Redirecionamento Direto)
     const preference = await createCheckoutPreference({
       transactionAmount: priceAmount,
@@ -44,6 +46,7 @@ export async function POST(req: Request) {
       payerEmail: email,
       payerName: name,
       payerCpf: cpf,
+      orderId: tempOrderId,
     });
 
     let paymentResult = {
@@ -62,6 +65,7 @@ export async function POST(req: Request) {
         payerEmail: email,
         payerName: name,
         payerCpf: cpf,
+        orderId: tempOrderId,
       });
 
       if (pixPayment.qrCodePix) {
@@ -74,7 +78,7 @@ export async function POST(req: Request) {
       }
     }
 
-    let orderId = "ord_" + Math.random().toString(36).substring(2, 10);
+    let orderId = tempOrderId;
 
     // 2. Salvar Pedido no Supabase
     if (isSupabaseConfigured) {

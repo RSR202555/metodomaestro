@@ -6,6 +6,7 @@ export interface PaymentParams {
   payerEmail: string;
   payerName: string;
   payerCpf: string;
+  orderId?: string;
 }
 
 export async function createCheckoutPreference(params: PaymentParams) {
@@ -18,7 +19,7 @@ export async function createCheckoutPreference(params: PaymentParams) {
     try {
       const client = new MercadoPagoConfig({ accessToken });
       const preference = new Preference(client);
-      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || "https://aulamaestro.com.br";
       const nameParts = params.payerName.trim().split(" ");
       const firstName = nameParts[0] || "Cliente";
       const lastName = nameParts.slice(1).join(" ") || "Maestro";
@@ -54,8 +55,9 @@ export async function createCheckoutPreference(params: PaymentParams) {
           failure: `${siteUrl}?payment=failure`,
           pending: `${siteUrl}/obrigado?status=pending`,
         },
+        notification_url: `${siteUrl}/api/checkout/webhook`,
         statement_descriptor: "METODOMAESTRO",
-        external_reference: "ref_" + Date.now(),
+        external_reference: params.orderId || "ref_" + Date.now(),
       };
 
       const response = await preference.create({ body });
@@ -107,6 +109,8 @@ export async function createPixPayment(params: PaymentParams) {
             number: cleanCpf && cleanCpf.length === 11 ? cleanCpf : "00000000000",
           },
         },
+        notification_url: `${process.env.NEXT_PUBLIC_SITE_URL || process.env.NEXT_PUBLIC_APP_URL || "https://aulamaestro.com.br"}/api/checkout/webhook`,
+        external_reference: params.orderId || "ref_" + Date.now(),
       };
 
       const response = await payment.create({ body });
@@ -149,11 +153,18 @@ export async function getPaymentDetails(paymentId: string | number) {
     accessToken && !accessToken.includes("placeholder")
   );
 
-  if (isMercadoPagoConfigured && paymentId && !String(paymentId).startsWith("mp_sim_")) {
+  const cleanId = String(paymentId || "").trim();
+
+  if (
+    isMercadoPagoConfigured &&
+    cleanId &&
+    !cleanId.startsWith("mp_sim_") &&
+    !cleanId.includes("-")
+  ) {
     try {
       const client = new MercadoPagoConfig({ accessToken });
       const payment = new Payment(client);
-      const response = await payment.get({ id: String(paymentId) });
+      const response = await payment.get({ id: cleanId });
 
       console.log(`[MercadoPago GetPayment Success]: ID: ${response.id}, Status: ${response.status}`);
       return {
@@ -161,6 +172,7 @@ export async function getPaymentDetails(paymentId: string | number) {
         status: response.status || "pending",
         statusDetail: response.status_detail,
         payerEmail: response.payer?.email,
+        externalReference: response.external_reference,
         transactionAmount: response.transaction_amount,
         isApproved: response.status === "approved",
       };
@@ -169,9 +181,8 @@ export async function getPaymentDetails(paymentId: string | number) {
     }
   }
 
-  // Fallback seguro: se a consulta falhar ou for ID simulado, não forçar aprovação falsa
   return {
-    id: String(paymentId),
+    id: cleanId,
     status: "pending",
     statusDetail: "pending",
     isApproved: false,
