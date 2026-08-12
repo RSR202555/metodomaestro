@@ -85,10 +85,27 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
     }
   }, [isOpen]);
 
-  // Escutar alteração de status em tempo real via Supabase caso esteja configurado
+  // Escutar alteração de status em tempo real via Supabase + Polling automático de backup
   useEffect(() => {
     if (!orderId) return;
 
+    // 1. Polling automático a cada 3 segundos consultando a API do Mercado Pago
+    const interval = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/orders/status?orderId=${orderId}`);
+        const data = await res.json();
+        if (data.isPaid || data.status === "paid") {
+          setIsSuccess(true);
+          setTimeout(() => {
+            window.location.href = "/obrigado?status=approved";
+          }, 800);
+        }
+      } catch (e) {
+        console.warn("[Checkout Polling Warning]:", e);
+      }
+    }, 3000);
+
+    // 2. Realtime listener no Supabase
     const channel = supabase
       .channel(`order-${orderId}`)
       .on(
@@ -104,13 +121,14 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
             setIsSuccess(true);
             setTimeout(() => {
               window.location.href = "/obrigado?status=approved";
-            }, 1000);
+            }, 800);
           }
         }
       )
       .subscribe();
 
     return () => {
+      clearInterval(interval);
       supabase.removeChannel(channel);
     };
   }, [orderId]);
