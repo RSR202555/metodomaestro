@@ -19,87 +19,83 @@ export default function Header({ onOpenCheckout }: HeaderProps) {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full bg-background/85 backdrop-blur-md border-b border-white/10 shadow-2xl transition-all">
-      <div className="flex items-center justify-between px-4 sm:px-6 max-w-container-max mx-auto h-16">
-        <button
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          className="md:hidden text-on-surface-variant hover:text-primary transition-colors p-1"
-          aria-label="Toggle Menu"
-        >
-          {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
-
-        <a
-          href="#"
-          className="font-bold tracking-tighter text-transparent bg-clip-text bg-gradient-to-r from-primary via-primary-container to-primary-fixed text-xl sm:text-2xl font-geist hover:opacity-90 transition-opacity"
-        >
-          MÉTODO MAESTRO
-        </a>
-
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-on-surface-variant">
-          <button
-            onClick={() => scrollToSection("problemas")}
-            className="hover:text-primary transition-colors"
-          >
-            O Ciclo
-          </button>
-          <button
-            onClick={() => scrollToSection("resultados")}
-            className="hover:text-primary transition-colors"
-          >
-            Resultados
-          </button>
-          <button
-            onClick={() => scrollToSection("faq")}
-            className="hover:text-primary transition-colors"
-          >
-            FAQ
-          </button>
-        </nav>
-
+    <header className="sticky top-0 z-40 w-full bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/10 shadow-2xl">
+      <div className="flex items-center justify-between px-4 sm:px-8 max-w-[1240px] mx-auto h-16 sm:h-20">
+        {/* Left Side: Menu Icon & Logo */}
         <div className="flex items-center gap-3">
           <button
-            onClick={onOpenCheckout}
-            className="bg-primary text-on-primary font-geist font-bold text-xs sm:text-sm uppercase tracking-wider py-2 px-4 sm:px-6 rounded-full shadow-[0_0_20px_rgba(212,175,55,0.25)] hover:shadow-[0_0_35px_rgba(212,175,55,0.45)] transition-all transform hover:-translate-y-0.5 active:translate-y-0"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="text-white hover:text-primary transition-colors p-1"
+            aria-label="Toggle Menu"
           >
-            Garantir Bilhete
+            {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+
+          <a
+            href="#"
+            className="font-geist font-extrabold tracking-tight text-lg sm:text-xl text-white flex items-center gap-1"
+          >
+            <span>AULA</span>
+            <span className="text-primary">MAESTRO™</span>
+          </a>
+        </div>
+
+        {/* Right Side: CTA Pill Button */}
+        <div>
+          <button
+            onClick={onOpenCheckout}
+            className="bg-primary text-black font-geist font-extrabold text-xs sm:text-sm uppercase tracking-wider py-2.5 px-5 sm:px-7 rounded-full shadow-[0_0_20px_rgba(242,202,80,0.3)] hover:shadow-[0_0_30px_rgba(242,202,80,0.5)] hover:scale-105 active:scale-95 transition-all"
+          >
+            QUERO PARTICIPAR
           </button>
         </div>
       </div>
 
       {/* Mobile Menu Drawer */}
       {mobileMenuOpen && (
-        <div className="md:hidden bg-[#131313]/95 backdrop-blur-xl border-b border-white/10 px-6 py-6 space-y-4 animate-in slide-in-from-top duration-300">
+        <div className="md:hidden bg-[#0A0A0A]/98 backdrop-blur-xl border-b border-white/10 px-6 py-6 space-y-4 animate-in slide-in-from-top duration-300">
           <button
-            onClick={() => scrollToSection("problemas")}
-            className="block w-full text-left py-2 text-on-surface hover:text-primary font-medium border-b border-white/5"
+            onClick={() => scrollToSection("detalhes")}
+            className="block w-full text-left py-2 text-white hover:text-primary font-medium border-b border-white/5"
           >
-            O Ciclo da Exaustão
+            Data, Local & Horários
           </button>
           <button
-            onClick={() => scrollToSection("resultados")}
-            className="block w-full text-left py-2 text-on-surface hover:text-primary font-medium border-b border-white/5"
+            onClick={() => scrollToSection("problema")}
+            className="block w-full text-left py-2 text-white hover:text-primary font-medium border-b border-white/5"
           >
-            Depoimentos & Prova Social
+            O Problema
+          </button>
+          <button
+            onClick={() => scrollToSection("depoimentos")}
+            className="block w-full text-left py-2 text-white hover:text-primary font-medium border-b border-white/5"
+          >
+            Depoimentos
+          </button>
+          <button
+            onClick={() => scrollToSection("em-acao")}
+            className="block w-full text-left py-2 text-white hover:text-primary font-medium border-b border-white/5"
+          >
+            A Aula Maestro em Ação
           </button>
           <button
             onClick={() => scrollToSection("faq")}
-            className="block w-full text-left py-2 text-on-surface hover:text-primary font-medium border-b border-white/5"
+            className="block w-full text-left py-2 text-white hover:text-primary font-medium border-b border-white/5"
           >
-            Perguntas Frequentes (FAQ)
+            Perguntas Frequentes
           </button>
           <button
             onClick={() => {
               setMobileMenuOpen(false);
               onOpenCheckout();
             }}
-            className="w-full bg-primary-container text-on-primary-container font-bold text-sm uppercase tracking-wider py-3 rounded-full text-center mt-4"
+            className="w-full bg-primary text-black font-extrabold text-xs uppercase tracking-wider py-3 rounded-full text-center mt-4"
           >
-            Garantir Vaga
+            QUERO PARTICIPAR
           </button>
         </div>
       )}
     </header>
   );
 }
+
