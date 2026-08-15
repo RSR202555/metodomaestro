@@ -41,7 +41,7 @@ export default function HeroSection({ onOpenVideo, onOpenCheckout }: HeroSection
             />
             <div className="flex flex-col">
               <span className="font-geist font-black tracking-wider text-white text-base leading-tight">
-                MÉTODO <span className="text-primary font-black">MAESTRO</span>
+                AULA <span className="text-primary font-black">MAESTRO</span>
               </span>
               <span className="text-[11px] font-bold text-white/70 tracking-widest uppercase">
                 Por Filipe Aquino

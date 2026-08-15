@@ -26,7 +26,7 @@ export default function Footer() {
               className="rounded-xl border border-primary/40 shadow-[0_0_15px_rgba(242,202,80,0.4)] group-hover:scale-105 transition-transform"
             />
             <div className="flex items-center gap-1">
-              <span>MÉTODO</span>
+              <span>AULA</span>
               <span className="text-primary font-black">MAESTRO™</span>
             </div>
           </a>
