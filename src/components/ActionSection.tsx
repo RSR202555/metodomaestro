@@ -2,6 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
+import { motion } from "framer-motion";
 import { Ticket, ArrowRight, Layers, Clock, Users, Brain } from "lucide-react";
 
 interface ActionSectionProps {
@@ -66,9 +67,11 @@ export default function ActionSection({ onOpenCheckout }: ActionSectionProps) {
         {/* 6 Photo Gallery Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12">
           {galleryImages.map((img, idx) => (
-            <div
+            <motion.div
               key={idx}
-              className="relative aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 glass-card group hover:border-primary/40 transition-all duration-300 shadow-lg"
+              whileHover={{ scale: 1.03, y: -4 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative aspect-[16/10] rounded-2xl overflow-hidden border border-white/10 glass-card group hover:border-primary/60 transition-all duration-300 shadow-lg cursor-pointer"
             >
               <Image
                 src={img.src}
@@ -78,7 +81,7 @@ export default function ActionSection({ onOpenCheckout }: ActionSectionProps) {
                 className="object-cover transition-transform duration-500 group-hover:scale-105 opacity-90 group-hover:opacity-100"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none"></div>
-            </div>
+            </motion.div>
           ))}
         </div>
 
@@ -89,9 +92,10 @@ export default function ActionSection({ onOpenCheckout }: ActionSectionProps) {
             {features.map((item, idx) => {
               const IconComp = item.icon;
               return (
-                <div
+                <motion.div
                   key={idx}
-                  className="p-6 sm:p-5 flex flex-col items-center text-center justify-start hover:bg-white/[0.02] transition-colors"
+                  whileHover={{ backgroundColor: "rgba(255, 255, 255, 0.04)" }}
+                  className="p-6 sm:p-5 flex flex-col items-center text-center justify-start transition-colors rounded-xl cursor-default"
                 >
                   {/* Icon */}
                   <div className="mb-5 text-primary">
@@ -107,7 +111,7 @@ export default function ActionSection({ onOpenCheckout }: ActionSectionProps) {
                   <p className="font-inter text-xs text-white/50 leading-relaxed max-w-[200px]">
                     {item.description}
                   </p>
-                </div>
+                </motion.div>
               );
             })}
           </div>
@@ -116,7 +120,7 @@ export default function ActionSection({ onOpenCheckout }: ActionSectionProps) {
           <div>
             <button
               onClick={onOpenCheckout}
-              className="w-full bg-primary text-black font-geist font-extrabold text-xs sm:text-sm uppercase tracking-wider py-4 px-6 rounded-full shadow-[0_0_25px_rgba(242,202,80,0.35)] hover:shadow-[0_0_40px_rgba(242,202,80,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3"
+              className="w-full bg-primary text-black font-geist font-extrabold text-xs sm:text-sm uppercase tracking-wider py-4 px-6 rounded-full shadow-[0_0_25px_rgba(242,202,80,0.35)] hover:shadow-[0_0_40px_rgba(242,202,80,0.6)] hover:scale-[1.01] active:scale-[0.99] transition-all flex items-center justify-center gap-3 cursor-pointer"
             >
               <Ticket className="w-5 h-5 fill-black/20" />
               <span>QUERO PARTICIPAR DA PRÓXIMA TURMA</span>

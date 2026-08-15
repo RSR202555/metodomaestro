@@ -1,9 +1,31 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import { Calendar, MapPin, Clock } from "lucide-react";
 
 export default function EventDetailsSection() {
+  const cards = [
+    {
+      icon: Calendar,
+      label: "DATAS",
+      title: "5 e 6 de Setembro",
+      subtitle: "Treinamento presencial",
+    },
+    {
+      icon: MapPin,
+      label: "LOCALIZAÇÃO",
+      title: "World Gym Pro",
+      subtitle: "Salvador — Bahia",
+    },
+    {
+      icon: Clock,
+      label: "HORÁRIOS",
+      title: "Sábado e Domingo",
+      subtitle: "09h às 13h | 14h às 18h",
+    },
+  ];
+
   return (
     <section id="detalhes" className="py-16 px-4 sm:px-8 bg-[#0A0A0A] relative border-t border-white/5">
       <div className="max-w-[1240px] mx-auto">
@@ -14,55 +36,32 @@ export default function EventDetailsSection() {
           </h2>
         </div>
 
-        {/* 3 Glassmorphism Cards Grid */}
+        {/* 3 Interactive Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* Card 1: DATAS */}
-          <div className="glass-card bg-[#141414]/90 border border-white/10 hover:border-primary/40 rounded-2xl p-8 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1">
-            <div className="w-14 h-14 rounded-2xl bg-transparent border border-primary/40 flex items-center justify-center text-primary mb-5 shadow-[0_0_15px_rgba(242,202,80,0.15)]">
-              <Calendar className="w-7 h-7 text-primary stroke-[1.75]" />
-            </div>
-            <span className="text-xs font-bold tracking-widest uppercase text-white/60 mb-2">
-              DATAS
-            </span>
-            <h3 className="font-geist text-xl sm:text-2xl font-bold text-white mb-1">
-              5 e 6 de Setembro
-            </h3>
-            <p className="text-xs sm:text-sm text-white/50 font-medium">
-              Treinamento presencial
-            </p>
-          </div>
-
-          {/* Card 2: LOCALIZAÇÃO */}
-          <div className="glass-card bg-[#141414]/90 border border-white/10 hover:border-primary/40 rounded-2xl p-8 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1">
-            <div className="w-14 h-14 rounded-2xl bg-transparent border border-primary/40 flex items-center justify-center text-primary mb-5 shadow-[0_0_15px_rgba(242,202,80,0.15)]">
-              <MapPin className="w-7 h-7 text-primary stroke-[1.75]" />
-            </div>
-            <span className="text-xs font-bold tracking-widest uppercase text-white/60 mb-2">
-              LOCALIZAÇÃO
-            </span>
-            <h3 className="font-geist text-xl sm:text-2xl font-bold text-white mb-1">
-              World Gym Pro
-            </h3>
-            <p className="text-xs sm:text-sm text-white/50 font-medium">
-              Salvador — Bahia
-            </p>
-          </div>
-
-          {/* Card 3: HORÁRIOS */}
-          <div className="glass-card bg-[#141414]/90 border border-white/10 hover:border-primary/40 rounded-2xl p-8 flex flex-col items-center text-center transition-all duration-300 hover:-translate-y-1">
-            <div className="w-14 h-14 rounded-2xl bg-transparent border border-primary/40 flex items-center justify-center text-primary mb-5 shadow-[0_0_15px_rgba(242,202,80,0.15)]">
-              <Clock className="w-7 h-7 text-primary stroke-[1.75]" />
-            </div>
-            <span className="text-xs font-bold tracking-widest uppercase text-white/60 mb-2">
-              HORÁRIOS
-            </span>
-            <h3 className="font-geist text-xl sm:text-2xl font-bold text-white mb-1">
-              Sábado e Domingo
-            </h3>
-            <p className="text-xs sm:text-sm text-white/50 font-medium">
-              09h às 13h | 14h às 18h
-            </p>
-          </div>
+          {cards.map((card, idx) => {
+            const IconComp = card.icon;
+            return (
+              <motion.div
+                key={idx}
+                whileHover={{ y: -8, scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="glass-card bg-[#141414]/90 border border-white/10 hover:border-primary/50 rounded-2xl p-8 flex flex-col items-center text-center transition-all duration-300 shadow-xl hover:shadow-[0_0_30px_rgba(242,202,80,0.15)] group cursor-pointer"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-primary/10 border border-primary/40 flex items-center justify-center text-primary mb-5 shadow-[0_0_20px_rgba(242,202,80,0.2)] group-hover:scale-110 transition-transform">
+                  <IconComp className="w-7 h-7 text-primary stroke-[1.75]" />
+                </div>
+                <span className="text-xs font-bold tracking-widest uppercase text-white/60 mb-2">
+                  {card.label}
+                </span>
+                <h3 className="font-geist text-xl sm:text-2xl font-bold text-white mb-1 group-hover:text-primary transition-colors">
+                  {card.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-white/50 font-medium">
+                  {card.subtitle}
+                </p>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

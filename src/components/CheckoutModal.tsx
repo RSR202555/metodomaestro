@@ -198,16 +198,32 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-xl flex items-center justify-center p-4 overflow-y-auto animate-in fade-in duration-300">
-      <div className="relative w-full max-w-xl bg-[#141414] border border-primary/30 rounded-3xl p-6 sm:p-8 shadow-[0_0_50px_rgba(212,175,55,0.2)] my-8">
-        {/* Botão Fechar */}
-        <button
-          onClick={onClose}
-          className="absolute top-5 right-5 text-on-surface-variant hover:text-white transition-colors"
-          aria-label="Fechar"
-        >
-          <X className="w-6 h-6" />
-        </button>
+    <div
+      onClick={onClose}
+      className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 overflow-y-auto animate-in fade-in duration-300 cursor-pointer"
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-xl bg-[#141414] border border-primary/30 rounded-3xl p-5 sm:p-8 shadow-[0_0_50px_rgba(212,175,55,0.2)] my-auto cursor-default"
+      >
+        {/* Sticky Header with Close Button for Mobile & Desktop */}
+        <div className="sticky top-0 z-30 flex items-center justify-between pb-3 mb-4 border-b border-white/10 bg-[#141414]/95 backdrop-blur-md pt-3 -mx-5 px-5 sm:-mx-8 sm:px-8 -mt-5 sm:-mt-8 rounded-t-3xl">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+            <span className="text-xs font-bold text-white uppercase tracking-wider font-geist">
+              Inscrição Método Maestro
+            </span>
+          </div>
+          <button
+            onClick={onClose}
+            type="button"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/10 hover:bg-primary hover:text-black text-white text-xs font-bold transition-all cursor-pointer shadow-md"
+            aria-label="Voltar para a página inicial"
+          >
+            <span>VOLTAR</span>
+            <X className="w-4 h-4" />
+          </button>
+        </div>
 
         {!isSuccess ? (
           <form onSubmit={handleConfirmPurchase}>
@@ -364,6 +380,17 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
               <Lock className="w-3.5 h-3.5" />
               Ambiente seguro SSL 256-bit com garantia incondicional de 7 dias.
             </p>
+
+            <div className="mt-4 pt-3 border-t border-white/10 text-center">
+              <button
+                type="button"
+                onClick={onClose}
+                className="text-xs font-semibold text-white/60 hover:text-primary transition-colors py-2 px-4 rounded-full border border-white/10 hover:border-primary/40 inline-flex items-center gap-1.5 cursor-pointer"
+              >
+                <X className="w-3.5 h-3.5" />
+                <span>Voltar para a Página Inicial</span>
+              </button>
+            </div>
           </form>
         ) : (
           <div className="text-center py-4 animate-in zoom-in-95 duration-300">
