@@ -17,8 +17,8 @@ export async function POST(req: Request) {
       );
     }
 
-    let priceAmount = 1.0;
-    let lotName = "Ingresso Método Maestro - Lote de Teste (R$ 1,00)";
+    let priceAmount = 297.0;
+    let lotName = "Ingresso Método Maestro - Lote 1";
     let lotId: string | null = null;
 
     // Buscar o Lote Ativo no Supabase para aplicar preço e nome em tempo real
@@ -31,8 +31,8 @@ export async function POST(req: Request) {
         .maybeSingle();
 
       if (activeLot) {
-        priceAmount = 1.0;
-        lotName = activeLot.name;
+        priceAmount = Number(activeLot.price) || 297.0;
+        lotName = activeLot.name || "Ingresso Método Maestro - Lote 1";
         lotId = activeLot.id;
       }
     }

@@ -17,11 +17,11 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
 
   // Lote Ativo dinâmico retornado pela API
   const [activeLot, setActiveLot] = useState({
-    title: "Ingresso Método Maestro - Lote de Teste",
-    price: "R$ 1,00",
-    numericPrice: 1.0,
+    title: "Ingresso Método Maestro - Lote 1",
+    price: "R$ 297,00",
+    numericPrice: 297.0,
     benefits: [
-      "Acesso aos 2 Dias de Imersão Presencial (5 e 6 de Setembro)",
+      "Acesso aos 2 Dias de Imersão Presencial (5 e 6 de Setembro na World Gym Pro)",
       "Material de Apoio e Planilhas de Precificação",
       "Certificado Oficial de Conclusão",
       "Acesso ao Grupo Exclusivo de Avisos",

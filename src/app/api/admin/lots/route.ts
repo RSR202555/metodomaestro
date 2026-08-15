@@ -7,9 +7,9 @@ export const dynamic = "force-dynamic";
 let IN_MEMORY_LOTS = [
   {
     id: "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
-    name: "Ingresso Método Maestro - Lote de Teste",
-    price: 1.0,
-    description: "Acesso aos 2 Dias de Imersão Presencial + Material de Apoio + Certificado Oficial",
+    name: "Ingresso Método Maestro - Lote 1",
+    price: 297.0,
+    description: "Acesso aos 2 Dias de Imersão Presencial (5 e 6 de Setembro na World Gym Pro)",
     active: true,
     total_available: 100,
     total_sold: 0,
@@ -27,8 +27,8 @@ let IN_MEMORY_LOTS = [
 
 export async function GET() {
   try {
-    // Tentar atualizar no Supabase para garantir persistência do R$ 1,00
-    await supabaseAdmin.from("lots").update({ price: 1.0 }).eq("active", true);
+    // Tentar atualizar no Supabase para garantir persistência do R$ 297,00
+    await supabaseAdmin.from("lots").update({ price: 297.0, name: "Ingresso Método Maestro - Lote 1" }).eq("active", true);
 
     const { data, error } = await supabaseAdmin
       .from("lots")
@@ -36,7 +36,7 @@ export async function GET() {
       .order("created_at", { ascending: true });
 
     if (!error && data && data.length > 0) {
-      const adjusted = data.map((l) => ({ ...l, price: 1.0 }));
+      const adjusted = data.map((l) => ({ ...l, price: l.active ? 297.0 : l.price }));
       IN_MEMORY_LOTS = adjusted;
       return NextResponse.json({ lots: adjusted, source: "supabase" });
     }
