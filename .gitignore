@@ -33,3 +33,10 @@ next-env.d.ts
 .DS_Store
 *.pem
 Thumbs.db
+
+# Temp compression tools
+ffmpeg.exe
+ffmpeg.zip
+ffmpeg_out
+compress.js
+upload.js
