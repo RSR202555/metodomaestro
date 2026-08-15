@@ -5,10 +5,16 @@ export const metadata: Metadata = {
   title: "MÉTODO MAESTRO - A ELITE DO PERSONAL TRAINER",
   description: "A mentoria presencial definitiva para escalar seu faturamento e dominar a autoridade no mercado de alto padrão.",
   keywords: ["personal trainer", "mentoria", "método maestro", "faturamento personal", "vendas fitness"],
+  icons: {
+    icon: "/imagens/logo.jpeg",
+    shortcut: "/imagens/logo.jpeg",
+    apple: "/imagens/logo.jpeg",
+  },
   openGraph: {
     title: "MÉTODO MAESTRO - A ELITE DO PERSONAL TRAINER",
     description: "Escale seu faturamento e domine o mercado de alto padrão.",
     type: "website",
+    images: ["/imagens/logo.jpeg"],
   },
 };
 
@@ -20,6 +26,9 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className="dark scroll-smooth">
       <head>
+        <link rel="icon" href="/imagens/logo.jpeg" type="image/jpeg" />
+        <link rel="shortcut icon" href="/imagens/logo.jpeg" type="image/jpeg" />
+        <link rel="apple-touch-icon" href="/imagens/logo.jpeg" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link

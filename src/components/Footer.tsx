@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { Instagram, Youtube } from "lucide-react";
 
 export default function Footer() {
@@ -16,9 +17,18 @@ export default function Footer() {
       <div className="max-w-[1240px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
         {/* Left Column - Brand & Description */}
         <div className="md:col-span-5 flex flex-col items-start text-left">
-          <a href="#" className="font-geist font-extrabold text-xl sm:text-2xl text-white mb-3 flex items-center gap-1">
-            <span>AULA</span>
-            <span className="text-primary font-black">MAESTRO™</span>
+          <a href="#" className="font-geist font-extrabold text-xl sm:text-2xl text-white mb-3 flex items-center gap-3 group">
+            <Image
+              src="/imagens/logo.jpeg"
+              alt="Logo Método Maestro"
+              width={38}
+              height={38}
+              className="rounded-xl border border-primary/40 shadow-[0_0_15px_rgba(242,202,80,0.4)] group-hover:scale-105 transition-transform"
+            />
+            <div className="flex items-center gap-1">
+              <span>MÉTODO</span>
+              <span className="text-primary font-black">MAESTRO™</span>
+            </div>
           </a>
           <p className="text-xs sm:text-sm text-white/50 max-w-sm leading-relaxed">
             Ensinamos o professor a conduzir aulas com intenção, clareza e segurança.
@@ -83,10 +93,14 @@ export default function Footer() {
           </div>
 
           {/* Square Brand Box */}
-          <div className="bg-[#121212] border border-white/10 rounded-xl p-4 flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary/10 border border-primary/40 flex items-center justify-center text-primary font-black font-geist text-sm">
-              M
-            </div>
+          <div className="bg-[#121212] border border-white/10 rounded-xl p-3.5 flex items-center gap-3">
+            <Image
+              src="/imagens/logo.jpeg"
+              alt="Emblema Método Maestro"
+              width={32}
+              height={32}
+              className="rounded-lg border border-primary/40 shadow-[0_0_10px_rgba(242,202,80,0.3)]"
+            />
             <span className="font-geist text-xs font-bold text-white">
               Método Maestro™
             </span>

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { ReactNode, useEffect, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { isSupabaseConfigured, supabase } from "@/lib/supabase/client";
@@ -61,9 +62,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         <div>
           {/* Logo & Marca */}
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary via-yellow-400 to-yellow-600 flex items-center justify-center text-black font-extrabold text-xl shadow-[0_0_20px_rgba(212,175,55,0.4)]">
-              M
-            </div>
+            <Image
+              src="/imagens/logo.jpeg"
+              alt="Logo Método Maestro"
+              width={38}
+              height={38}
+              className="rounded-xl border border-primary/40 shadow-[0_0_15px_rgba(212,175,55,0.4)]"
+            />
             <div>
               <h1 className="font-geist font-extrabold text-sm tracking-wider uppercase text-white">
                 MÉTODO MAESTRO

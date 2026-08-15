@@ -30,6 +30,25 @@ export default function HeroSection({ onOpenVideo, onOpenCheckout }: HeroSection
       <div className="relative z-10 w-full max-w-[1240px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
         {/* Left Column - Copy & Bullets */}
         <div className="lg:col-span-6 flex flex-col items-start text-left">
+          {/* Brand Emblem Logo Header */}
+          <div className="flex items-center gap-3 mb-5">
+            <Image
+              src="/imagens/logo.jpeg"
+              alt="Logo Método Maestro"
+              width={46}
+              height={46}
+              className="rounded-xl border border-primary/50 shadow-[0_0_25px_rgba(242,202,80,0.45)]"
+            />
+            <div className="flex flex-col">
+              <span className="font-geist font-black tracking-wider text-white text-base leading-tight">
+                MÉTODO <span className="text-primary font-black">MAESTRO</span>
+              </span>
+              <span className="text-[11px] font-bold text-white/70 tracking-widest uppercase">
+                Por Filipe Aquino
+              </span>
+            </div>
+          </div>
+
           {/* Top Pill Badge */}
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#161616] border border-primary/30 text-primary text-xs font-extrabold tracking-wider uppercase mb-6 shadow-[0_0_20px_rgba(242,202,80,0.15)]">
             <Sparkles className="w-3.5 h-3.5 fill-primary" />

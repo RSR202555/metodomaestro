@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import { supabase } from "@/lib/supabase/client";
 import { X, CheckCircle2, QrCode, CreditCard, ArrowRight, Lock, Copy, ExternalLink, RefreshCw, AlertCircle } from "lucide-react";
 
@@ -208,8 +209,14 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       >
         {/* Sticky Header with Close Button for Mobile & Desktop */}
         <div className="sticky top-0 z-30 flex items-center justify-between pb-3 mb-4 border-b border-white/10 bg-[#141414]/95 backdrop-blur-md pt-3 -mx-5 px-5 sm:-mx-8 sm:px-8 -mt-5 sm:-mt-8 rounded-t-3xl">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+          <div className="flex items-center gap-2.5">
+            <Image
+              src="/imagens/logo.jpeg"
+              alt="Logo Método Maestro"
+              width={26}
+              height={26}
+              className="rounded-md border border-primary/40 shadow-[0_0_10px_rgba(242,202,80,0.4)]"
+            />
             <span className="text-xs font-bold text-white uppercase tracking-wider font-geist">
               Inscrição Método Maestro
             </span>

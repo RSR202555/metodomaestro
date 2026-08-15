@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import Image from "next/image";
 import { Menu, X } from "lucide-react";
 
 interface HeaderProps {
@@ -33,10 +34,19 @@ export default function Header({ onOpenCheckout }: HeaderProps) {
 
           <a
             href="#"
-            className="font-geist font-extrabold tracking-tight text-lg sm:text-xl text-white flex items-center gap-1"
+            className="font-geist font-extrabold tracking-tight text-lg sm:text-xl text-white flex items-center gap-2.5 group"
           >
-            <span>AULA</span>
-            <span className="text-primary">MAESTRO™</span>
+            <Image
+              src="/imagens/logo.jpeg"
+              alt="Método Maestro Logo"
+              width={34}
+              height={34}
+              className="rounded-lg border border-primary/40 shadow-[0_0_15px_rgba(242,202,80,0.4)] group-hover:scale-105 transition-transform"
+            />
+            <div className="flex items-center gap-1">
+              <span>MÉTODO</span>
+              <span className="text-primary font-black">MAESTRO™</span>
+            </div>
           </a>
         </div>
 
