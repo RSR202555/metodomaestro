@@ -86,7 +86,7 @@ export default function HeroSection({ onOpenVideo, onOpenCheckout }: HeroSection
               {isPlayingInline ? (
                 <video
                   ref={inlineVideoRef}
-                  src="/imagens/ANUNCIO MAESTRO.mp4"
+                  src="/imagens/ANUNCIO%20MAESTRO.mp4"
                   poster="/imagens/aquino01.jpg.jpeg"
                   controls
                   autoPlay

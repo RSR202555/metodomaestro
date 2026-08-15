@@ -53,7 +53,7 @@ export default function VideoModal({ isOpen, onClose }: VideoModalProps) {
           <video
             ref={videoRef}
             className="w-full h-full object-contain"
-            src="/imagens/ANUNCIO MAESTRO.mp4"
+            src="/imagens/ANUNCIO%20MAESTRO.mp4"
             poster="/imagens/aquino01.jpg.jpeg"
             controls
             autoPlay
