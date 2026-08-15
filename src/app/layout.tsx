@@ -2,16 +2,16 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "MÉTODO MAESTRO - A ELITE DO PERSONAL TRAINER",
+  title: "AULA MAESTRO - A ELITE DO PERSONAL TRAINER",
   description: "A mentoria presencial definitiva para escalar seu faturamento e dominar a autoridade no mercado de alto padrão.",
-  keywords: ["personal trainer", "mentoria", "método maestro", "faturamento personal", "vendas fitness"],
+  keywords: ["personal trainer", "mentoria", "aula maestro", "faturamento personal", "vendas fitness"],
   icons: {
     icon: "/imagens/logo.jpeg",
     shortcut: "/imagens/logo.jpeg",
     apple: "/imagens/logo.jpeg",
   },
   openGraph: {
-    title: "MÉTODO MAESTRO - A ELITE DO PERSONAL TRAINER",
+    title: "AULA MAESTRO - A ELITE DO PERSONAL TRAINER",
     description: "Escale seu faturamento e domine o mercado de alto padrão.",
     type: "website",
     images: ["/imagens/logo.jpeg"],

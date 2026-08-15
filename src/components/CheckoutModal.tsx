@@ -218,7 +218,7 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
               className="rounded-md border border-primary/40 shadow-[0_0_10px_rgba(242,202,80,0.4)]"
             />
             <span className="text-xs font-bold text-white uppercase tracking-wider font-geist">
-              Inscrição Método Maestro
+              Inscrição Aula Maestro
             </span>
           </div>
           <button
