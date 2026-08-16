@@ -9,7 +9,7 @@ let IN_MEMORY_LOTS = [
     id: "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
     name: "Ingresso Método Maestro - Lote 1",
     price: 297.0,
-    description: "Acesso aos 2 Dias de Imersão Presencial (5 e 6 de Setembro na World Gym Pro)",
+    description: "Acesso aos Dias de Imersão Presencial (12, 13, 26 e 27 de Setembro na World Gym Pro)",
     active: true,
     total_available: 100,
     total_sold: 0,

@@ -38,7 +38,7 @@ export async function GET(req: Request) {
         pdf_url: ticket.pdf_url,
         customer_name: ticket.customer_name || "Participante",
         lot_name: ticket.lot_name || "Ingresso Método Maestro - Lote VIP",
-        event_date: "5 e 6 de Setembro de 2026",
+        event_date: "12, 13, 26 e 27 de Setembro de 2026 (Sáb 16h30 | Dom 15h30)",
         event_location: "World Gym Pro (Salvador - BA)",
         qrCodeBase64,
       },

@@ -196,7 +196,7 @@ function ThankYouContent() {
               <Calendar className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
               <div>
                 <span className="text-gray-400 block text-[11px] uppercase font-bold">Data</span>
-                <strong className="text-white">5 e 6 de Setembro</strong>
+                <strong className="text-white">12, 13, 26 e 27 de Setembro</strong>
               </div>
             </div>
 
@@ -212,7 +212,7 @@ function ThankYouContent() {
               <Clock className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
               <div>
                 <span className="text-gray-400 block text-[11px] uppercase font-bold">Horários</span>
-                <strong className="text-white">Sáb 15h30 | Dom 14h</strong>
+                <strong className="text-white">Sáb 16h30 | Dom 15h30</strong>
               </div>
             </div>
           </div>

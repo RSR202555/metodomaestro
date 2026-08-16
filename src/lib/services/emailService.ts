@@ -35,7 +35,7 @@ export async function sendTicketEmail(params: SendTicketEmailParams): Promise<{
     ticketCode,
     qrToken,
     lotName,
-    eventDate = "5 e 6 de Setembro de 2026",
+    eventDate = "12, 13, 26 e 27 de Setembro de 2026 (Sáb 16h30 | Dom 15h30)",
     eventLocation = "World Gym Pro (Salvador - BA)",
     pdfBuffer,
     pdfUrl,

@@ -21,12 +21,12 @@ export default function Header({ onOpenCheckout }: HeaderProps) {
 
   return (
     <header className="sticky top-0 z-40 w-full bg-[#0A0A0A]/95 backdrop-blur-md border-b border-white/10 shadow-2xl">
-      <div className="flex items-center justify-between px-4 sm:px-8 max-w-[1240px] mx-auto h-16 sm:h-20">
+      <div className="flex items-center justify-between px-3 sm:px-8 max-w-[1240px] mx-auto h-16 sm:h-20 gap-2">
         {/* Left Side: Menu Icon & Logo */}
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2 sm:gap-3 min-w-0 shrink">
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="text-white hover:text-primary transition-colors p-1"
+            className="text-white hover:text-primary transition-colors p-1 shrink-0"
             aria-label="Toggle Menu"
           >
             {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -34,16 +34,16 @@ export default function Header({ onOpenCheckout }: HeaderProps) {
 
           <a
             href="#"
-            className="font-geist font-extrabold tracking-tight text-lg sm:text-xl text-white flex items-center gap-2.5 group"
+            className="font-geist font-extrabold tracking-tight text-sm sm:text-xl text-white flex items-center gap-2 group shrink-0"
           >
             <Image
               src="/imagens/logo.jpeg"
               alt="Método Maestro Logo"
               width={34}
               height={34}
-              className="rounded-lg border border-primary/40 shadow-[0_0_15px_rgba(242,202,80,0.4)] group-hover:scale-105 transition-transform"
+              className="rounded-lg border border-primary/40 shadow-[0_0_15px_rgba(242,202,80,0.4)] group-hover:scale-105 transition-transform shrink-0"
             />
-            <div className="flex items-center gap-1">
+            <div className="hidden min-[380px]:flex items-center gap-1 whitespace-nowrap">
               <span>AULA</span>
               <span className="text-primary font-black">MAESTRO™</span>
             </div>
@@ -51,10 +51,10 @@ export default function Header({ onOpenCheckout }: HeaderProps) {
         </div>
 
         {/* Right Side: CTA Pill Button */}
-        <div>
+        <div className="shrink-0">
           <button
             onClick={onOpenCheckout}
-            className="bg-primary text-black font-geist font-extrabold text-xs sm:text-sm uppercase tracking-wider py-2.5 px-5 sm:px-7 rounded-full shadow-[0_0_20px_rgba(242,202,80,0.3)] hover:shadow-[0_0_30px_rgba(242,202,80,0.5)] hover:scale-105 active:scale-95 transition-all"
+            className="bg-primary text-black font-geist font-extrabold text-[11px] sm:text-sm uppercase tracking-wider py-2 sm:py-2.5 px-3.5 sm:px-7 rounded-full shadow-[0_0_20px_rgba(242,202,80,0.3)] hover:shadow-[0_0_30px_rgba(242,202,80,0.5)] hover:scale-105 active:scale-95 transition-all whitespace-nowrap"
           >
             QUERO PARTICIPAR
           </button>

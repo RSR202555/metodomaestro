@@ -24,7 +24,7 @@ export async function generateTicketPDF(params: GeneratePDFParams): Promise<Buff
     customerName,
     customerCpf,
     lotName,
-    eventDate = "5 e 6 de Setembro",
+    eventDate = "12, 13, 26 e 27 de Setembro (Sáb 16h30 | Dom 15h30)",
     eventLocation = "World Gym Pro (Salvador - BA)",
   } = params;
 

@@ -9,8 +9,8 @@ export default function EventDetailsSection() {
     {
       icon: Calendar,
       label: "DATAS",
-      title: "5 e 6 de Setembro",
-      subtitle: "Treinamento presencial",
+      title: "12, 13, 26 e 27 de Setembro",
+      subtitle: "Sábados e Domingos de Imersão",
     },
     {
       icon: MapPin,
@@ -21,8 +21,8 @@ export default function EventDetailsSection() {
     {
       icon: Clock,
       label: "HORÁRIOS",
-      title: "Sábado e Domingo",
-      subtitle: "09h às 13h | 14h às 18h",
+      title: "Sáb 16h30 | Dom 15h30",
+      subtitle: "Sábados às 16h30 & Domingos às 15h30",
     },
   ];
 

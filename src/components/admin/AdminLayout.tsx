@@ -143,7 +143,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               Gestão da Imersão Método Maestro
             </h2>
             <p className="text-xs sm:text-sm text-gray-400 mt-1">
-              World Gym Pro (Salvador - BA) • 5 e 6 de Setembro
+              World Gym Pro (Salvador - BA) • 12, 13, 26 e 27 de Setembro
             </p>
           </div>
           <div className="flex items-center gap-3">
