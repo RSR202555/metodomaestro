@@ -128,6 +128,7 @@ export async function GET(req: Request) {
       customerEmail: order.customer_email,
       amount: order.amount,
       lotName: order.lot_name,
+      turma: order.turma || "turma_1",
       isPaid: order.status === "paid" || order.status === "approved",
       ticket: ticket
         ? {

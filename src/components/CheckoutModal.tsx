@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase/client";
-import { X, CheckCircle2, QrCode, CreditCard, ArrowRight, Lock, Copy, ExternalLink, RefreshCw, AlertCircle } from "lucide-react";
+import { X, CheckCircle2, QrCode, CreditCard, ArrowRight, Lock, Copy, ExternalLink, RefreshCw, AlertCircle, Tag } from "lucide-react";
 
 interface CheckoutModalProps {
   isOpen: boolean;
@@ -28,6 +28,38 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       "Acesso ao Grupo Exclusivo de Avisos",
     ],
   });
+
+  // Turma Selecionada e Vagas
+  const [turma, setTurma] = useState<"turma_1" | "turma_2">("turma_1");
+  const [turmasList, setTurmasList] = useState<any[]>([
+    {
+      id: "turma_1",
+      name: "Turma 1 — 12 e 13 de Setembro",
+      dates: "12 e 13 de Setembro",
+      vagasDisponiveis: 30,
+      totalVagas: 30,
+      esgotada: false,
+    },
+    {
+      id: "turma_2",
+      name: "Turma 2 — 26 e 27 de Setembro",
+      dates: "26 e 27 de Setembro",
+      vagasDisponiveis: 30,
+      totalVagas: 30,
+      esgotada: false,
+    },
+  ]);
+
+  // Cupom de Desconto State
+  const [couponInput, setCouponInput] = useState("");
+  const [appliedCoupon, setAppliedCoupon] = useState<{
+    code: string;
+    discountAmount: number;
+    finalAmount: number;
+    message: string;
+  } | null>(null);
+  const [validatingCoupon, setValidatingCoupon] = useState(false);
+  const [couponError, setCouponError] = useState("");
 
   // Formulário do Comprador
   const [name, setName] = useState("");
@@ -74,6 +106,21 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           }
         })
         .catch(console.error);
+
+      // Buscar vagas disponíveis das turmas em tempo real
+      fetch("/api/turmas")
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.turmas && data.turmas.length > 0) {
+            setTurmasList(data.turmas);
+            const t1 = data.turmas.find((t: any) => t.id === "turma_1");
+            const t2 = data.turmas.find((t: any) => t.id === "turma_2");
+            if (t1 && t1.esgotada && t2 && !t2.esgotada) {
+              setTurma("turma_2");
+            }
+          }
+        })
+        .catch(console.error);
     } else {
       // Resetar estado ao fechar
       setIsSuccess(false);
@@ -83,6 +130,9 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
       setCheckoutUrl("");
       setOrderId("");
       setCopied(false);
+      setCouponInput("");
+      setAppliedCoupon(null);
+      setCouponError("");
     }
   }, [isOpen]);
 
@@ -136,6 +186,39 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
 
   if (!isOpen) return null;
 
+  const handleApplyCoupon = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!couponInput.trim()) return;
+
+    setValidatingCoupon(true);
+    setCouponError("");
+
+    try {
+      const res = await fetch("/api/coupons/validate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          code: couponInput,
+          originalAmount: activeLot.numericPrice,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.valid) {
+        setCouponError(data.error || "Cupom inválido.");
+        setAppliedCoupon(null);
+      } else {
+        setAppliedCoupon(data);
+        setCouponError("");
+      }
+    } catch (err: any) {
+      setCouponError("Erro ao validar cupom.");
+    } finally {
+      setValidatingCoupon(false);
+    }
+  };
+
   const handleConfirmPurchase = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage("");
@@ -157,6 +240,8 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           cpf,
           phone,
           paymentMethod,
+          turma,
+          couponCode: appliedCoupon?.code || undefined,
         }),
       });
 
@@ -253,12 +338,33 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                   <h3 className="font-bold text-white text-base sm:text-lg font-geist">
                     {activeLot.title}
                   </h3>
-                  <p className="text-primary font-bold text-2xl sm:text-3xl mt-1">
-                    {activeLot.price}
-                  </p>
-                  <p className="text-xs text-on-surface-variant mt-0.5">
-                    ou em até 12x no cartão de crédito
-                  </p>
+                  {appliedCoupon ? (
+                    <div className="mt-1">
+                      <div className="flex items-baseline gap-2">
+                        <span className="text-gray-400 line-through text-sm">
+                          {activeLot.price}
+                        </span>
+                        <span className="text-primary font-bold text-2xl sm:text-3xl">
+                          {appliedCoupon.finalAmount.toLocaleString("pt-BR", {
+                            style: "currency",
+                            currency: "BRL",
+                          })}
+                        </span>
+                      </div>
+                      <p className="text-xs text-green-400 font-bold mt-0.5">
+                        ✓ Desconto de {appliedCoupon.discountAmount.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })} aplicado ({appliedCoupon.code})
+                      </p>
+                    </div>
+                  ) : (
+                    <>
+                      <p className="text-primary font-bold text-2xl sm:text-3xl mt-1">
+                        {activeLot.price}
+                      </p>
+                      <p className="text-xs text-on-surface-variant mt-0.5">
+                        ou em até 12x no cartão de crédito
+                      </p>
+                    </>
+                  )}
                 </div>
                 <CheckCircle2 className="w-8 h-8 text-primary" />
               </div>
@@ -273,7 +379,125 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
               </div>
             </div>
 
-            {/* Formulário de Dados do Participante */}
+            {/* SELEÇÃO DE TURMA */}
+            <div className="mb-6">
+              <div className="flex items-center justify-between mb-2">
+                <label className="block text-xs font-bold text-on-surface-variant uppercase tracking-wider">
+                  SELEÇÃO DE TURMA (30 VAGAS POR TURMA) *
+                </label>
+                <span className="text-[11px] text-primary font-bold">
+                  Limite Estrito
+                </span>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                {turmasList.map((t) => {
+                  const isSelected = turma === t.id;
+                  const isSoldOut = t.esgotada;
+
+                  return (
+                    <button
+                      key={t.id}
+                      type="button"
+                      disabled={isSoldOut}
+                      onClick={() => !isSoldOut && setTurma(t.id as any)}
+                      className={`p-3.5 rounded-2xl border text-left transition-all relative cursor-pointer ${
+                        isSoldOut
+                          ? "opacity-50 border-white/10 bg-white/5 cursor-not-allowed"
+                          : isSelected
+                          ? "border-primary bg-primary/10 shadow-[0_0_20px_rgba(242,202,80,0.25)]"
+                          : "border-white/10 bg-[#1a1a1a] hover:border-white/30"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-bold text-white uppercase tracking-wider font-geist">
+                          {t.id === "turma_1" ? "TURMA 1" : "TURMA 2"}
+                        </span>
+                        {isSoldOut ? (
+                          <span className="text-[10px] uppercase font-extrabold bg-red-500/20 border border-red-500/40 text-red-400 px-2 py-0.5 rounded-full">
+                            ESGOTADA
+                          </span>
+                        ) : (
+                          <span className="text-[10px] uppercase font-bold bg-green-500/15 border border-green-500/30 text-green-400 px-2 py-0.5 rounded-full">
+                            {t.vagasDisponiveis} vagas
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-sm font-extrabold text-primary font-geist">
+                        {t.dates}
+                      </p>
+                      <p className="text-[11px] text-gray-400 mt-0.5">
+                        Imersão Presencial (Sáb & Dom)
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* SELEÇÃO DE CUPOM DE DESCONTO */}
+            <div className="mb-6">
+              <label className="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+                Cupom de Desconto (Até 50% OFF)
+              </label>
+
+              {appliedCoupon ? (
+                <div className="bg-green-500/10 border border-green-500/30 rounded-2xl p-3.5 flex items-center justify-between">
+                  <div className="flex items-center gap-2">
+                    <Tag className="w-4 h-4 text-green-400" />
+                    <div>
+                      <span className="text-xs font-bold text-green-400 uppercase tracking-wider block">
+                        CUPOM {appliedCoupon.code} ATIVO
+                      </span>
+                      <span className="text-[11px] text-gray-300">
+                        Economia de {appliedCoupon.discountAmount.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+                      </span>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAppliedCoupon(null);
+                      setCouponInput("");
+                    }}
+                    className="text-xs font-bold text-gray-400 hover:text-red-400 underline transition-colors px-2 py-1"
+                  >
+                    Remover
+                  </button>
+                </div>
+              ) : (
+                <div>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="Ex: MAESTRO50"
+                      value={couponInput}
+                      onChange={(e) => setCouponInput(e.target.value.toUpperCase())}
+                      className="flex-1 bg-[#1a1a1a] border border-white/10 focus:border-primary text-white text-xs sm:text-sm rounded-xl px-3.5 py-3 outline-none transition-all placeholder:text-gray-500 uppercase font-mono"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleApplyCoupon}
+                      disabled={validatingCoupon || !couponInput.trim()}
+                      className="bg-white/10 hover:bg-primary hover:text-black border border-white/10 text-white font-bold text-xs uppercase px-5 py-3 rounded-xl transition-all disabled:opacity-50 flex items-center gap-1.5 cursor-pointer"
+                    >
+                      {validatingCoupon ? (
+                        <span className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin"></span>
+                      ) : (
+                        <Tag className="w-4 h-4" />
+                      )}
+                      <span>APLICAR</span>
+                    </button>
+                  </div>
+                  {couponError && (
+                    <p className="text-xs text-red-400 mt-1.5 flex items-center gap-1">
+                      <AlertCircle className="w-3.5 h-3.5 flex-shrink-0" />
+                      <span>{couponError}</span>
+                    </p>
+                  )}
+                </div>
+              )}
+            </div>
             <div className="space-y-4 mb-6">
               <label className="block text-xs font-bold text-on-surface-variant uppercase tracking-wider">
                 Dados do Participante

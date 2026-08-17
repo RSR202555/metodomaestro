@@ -27,6 +27,8 @@ export async function GET(req: Request) {
 
     const qrCodeBase64 = await generateQRCodeDataUrl(publicTicketUrl);
 
+    const eventDateText = ticket.turma === "turma_2" ? "26 e 27 de Setembro (Sáb 16h30 | Dom 15h30)" : "12 e 13 de Setembro (Sáb 16h30 | Dom 15h30)";
+
     return NextResponse.json({
       ticket: {
         ticket_code: ticket.ticket_code,
@@ -38,7 +40,8 @@ export async function GET(req: Request) {
         pdf_url: ticket.pdf_url,
         customer_name: ticket.customer_name || "Participante",
         lot_name: ticket.lot_name || "Ingresso Método Maestro - Lote VIP",
-        event_date: "12, 13, 26 e 27 de Setembro de 2026 (Sáb 16h30 | Dom 15h30)",
+        turma: ticket.turma || "turma_1",
+        event_date: eventDateText,
         event_location: "World Gym Pro (Salvador - BA)",
         qrCodeBase64,
       },

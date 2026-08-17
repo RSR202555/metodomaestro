@@ -21,6 +21,7 @@ interface Ticket {
   customer_email?: string;
   customer_cpf?: string;
   lot_name?: string;
+  turma?: string;
 }
 
 export default function AdminTicketsPage() {
@@ -499,9 +500,20 @@ export default function AdminTicketsPage() {
                           </div>
                         </td>
 
-                        {/* Lote */}
+                        {/* Lote & Turma */}
                         <td className="py-4 px-4 text-gray-300 text-xs">
-                          {t.lot_name || "Lote VIP"}
+                          <div>{t.lot_name || "Lote VIP"}</div>
+                          <div className="mt-1">
+                            {t.turma === "turma_2" ? (
+                              <span className="text-[10px] uppercase font-bold text-purple-400 bg-purple-500/10 border border-purple-500/30 px-2 py-0.5 rounded-full">
+                                Turma 2 (26 e 27/Set)
+                              </span>
+                            ) : (
+                              <span className="text-[10px] uppercase font-bold text-primary bg-primary/10 border border-primary/30 px-2 py-0.5 rounded-full">
+                                Turma 1 (12 e 13/Set)
+                              </span>
+                            )}
+                          </div>
                         </td>
 
                         {/* Status */}

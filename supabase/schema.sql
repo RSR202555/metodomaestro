@@ -41,6 +41,7 @@ CREATE TABLE IF NOT EXISTS public.orders (
   amount DECIMAL(10, 2) NOT NULL,
   payment_method TEXT NOT NULL CHECK (payment_method IN ('pix', 'card')),
   status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'paid', 'cancelled', 'refunded')),
+  turma TEXT DEFAULT 'turma_1',
   gateway_payment_id TEXT,
   qr_code_pix TEXT,
   qr_code_url TEXT,
@@ -48,6 +49,9 @@ CREATE TABLE IF NOT EXISTS public.orders (
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
+
+-- ADICIONAR COLUNA TURMA CASO A TABELA JÁ EXISTA
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS turma TEXT DEFAULT 'turma_1';
 
 -- INSERIR LOTE PADRÃO (LOTE 1)
 INSERT INTO public.lots (id, name, price, description, active, total_available, total_sold)
@@ -107,9 +111,12 @@ CREATE TABLE IF NOT EXISTS public.tickets (
   email_sent BOOLEAN NOT NULL DEFAULT false,
   email_sent_at TIMESTAMP WITH TIME ZONE,
   pdf_url TEXT,
+  turma TEXT DEFAULT 'turma_1',
   created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
+
+ALTER TABLE public.tickets ADD COLUMN IF NOT EXISTS turma TEXT DEFAULT 'turma_1';
 
 ALTER TABLE public.tickets ENABLE ROW LEVEL SECURITY;
 
@@ -123,10 +130,42 @@ CREATE INDEX IF NOT EXISTS idx_tickets_order_id ON public.tickets(order_id);
 CREATE INDEX IF NOT EXISTS idx_tickets_code ON public.tickets(ticket_code);
 CREATE INDEX IF NOT EXISTS idx_tickets_qr_token ON public.tickets(qr_token);
 CREATE INDEX IF NOT EXISTS idx_tickets_status ON public.tickets(status);
-CREATE INDEX IF NOT EXISTS idx_tickets_email_sent ON public.tickets(email_sent);
+-- ADICIONAR COLUNAS DE CUPOM CASO A TABELA ORDERS JÁ EXISTA
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS coupon_code TEXT;
+ALTER TABLE public.orders ADD COLUMN IF NOT EXISTS discount_amount DECIMAL(10, 2) DEFAULT 0;
+
+-- 5. TABELA DE CUPONS DE DESCONTO
+CREATE TABLE IF NOT EXISTS public.coupons (
+  id UUID DEFAULT uuid_generate_v4() PRIMARY KEY,
+  code TEXT UNIQUE NOT NULL,
+  discount_type TEXT NOT NULL DEFAULT 'percentage' CHECK (discount_type IN ('percentage', 'fixed')),
+  discount_value DECIMAL(10, 2) NOT NULL,
+  max_uses INT,
+  used_count INT DEFAULT 0 NOT NULL,
+  active BOOLEAN DEFAULT true NOT NULL,
+  expires_at TIMESTAMP WITH TIME ZONE,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+);
+
+ALTER TABLE public.coupons ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Permitir leitura publica de cupons" ON public.coupons
+  FOR SELECT USING (true);
+
+CREATE POLICY "Permitir alteracao de cupons" ON public.coupons
+  FOR ALL USING (true);
+
+CREATE INDEX IF NOT EXISTS idx_coupons_code ON public.coupons(code);
+
+-- INSERIR CUPOM EXEMPLO MAESTRO50 (50% OFF)
+INSERT INTO public.coupons (code, discount_type, discount_value, active)
+VALUES ('MAESTRO50', 'percentage', 50.00, true)
+ON CONFLICT (code) DO NOTHING;
 
 -- HABILITAR SUPABASE REALTIME NAS TABELAS
 ALTER PUBLICATION supabase_realtime ADD TABLE public.orders;
 ALTER PUBLICATION supabase_realtime ADD TABLE public.tickets;
+ALTER PUBLICATION supabase_realtime ADD TABLE public.coupons;
 
 

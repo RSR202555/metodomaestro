@@ -10,9 +10,10 @@ interface Order {
   customer_cpf: string;
   customer_phone?: string;
   lot_name: string;
+  turma?: string;
   amount: number;
   payment_method: string;
-  status: "pending" | "paid" | "cancelled" | "refunded";
+  status: "pending" | "paid" | "approved" | "cancelled" | "refunded";
   gateway_payment_id?: string;
   created_at: string;
   paid_at?: string;
@@ -168,7 +169,7 @@ export default function AdminOrdersPage() {
                   <tr className="bg-white/5 border-b border-white/10 text-gray-400 font-semibold uppercase tracking-wider">
                     <th className="py-3.5 px-4">Comprador / CPF</th>
                     <th className="py-3.5 px-4">Contato</th>
-                    <th className="py-3.5 px-4">Lote</th>
+                    <th className="py-3.5 px-4">Lote & Turma</th>
                     <th className="py-3.5 px-4">Valor</th>
                     <th className="py-3.5 px-4">Método</th>
                     <th className="py-3.5 px-4">Status</th>
@@ -191,7 +192,18 @@ export default function AdminOrdersPage() {
                         </div>
                       </td>
                       <td className="py-4 px-4 text-xs text-gray-300 font-medium">
-                        {order.lot_name}
+                        <div>{order.lot_name}</div>
+                        <div className="mt-1">
+                          {order.turma === "turma_2" ? (
+                            <span className="text-[10px] uppercase font-bold text-purple-400 bg-purple-500/10 border border-purple-500/30 px-2 py-0.5 rounded-full">
+                              Turma 2 (26 e 27/Set)
+                            </span>
+                          ) : (
+                            <span className="text-[10px] uppercase font-bold text-primary bg-primary/10 border border-primary/30 px-2 py-0.5 rounded-full">
+                              Turma 1 (12 e 13/Set)
+                            </span>
+                          )}
+                        </div>
                       </td>
                       <td className="py-4 px-4 font-bold text-primary">
                         {Number(order.amount).toLocaleString("pt-BR", {

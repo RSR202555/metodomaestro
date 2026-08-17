@@ -8,9 +8,9 @@ export default function EventDetailsSection() {
   const cards = [
     {
       icon: Calendar,
-      label: "DATAS",
-      title: "12, 13, 26 e 27 de Setembro",
-      subtitle: "Sábados e Domingos de Imersão",
+      label: "TURMAS DISPONÍVEIS",
+      title: "Turma 1: 12 e 13 / Turma 2: 26 e 27",
+      subtitle: "Setembro — 30 vagas por turma",
     },
     {
       icon: MapPin,

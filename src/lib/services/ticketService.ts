@@ -23,6 +23,7 @@ export interface TicketRecord {
   customer_email?: string;
   customer_cpf?: string;
   lot_name?: string;
+  turma?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -150,6 +151,8 @@ export async function issueTicketForOrder(orderId: string): Promise<{
     const customerEmail = order.customer_email || "";
     const customerCpf = order.customer_cpf || "";
     const lotName = order.lot_name || "Ingresso Método Maestro - Lote VIP";
+    const turma = order.turma || "turma_1";
+    const eventDateText = turma === "turma_2" ? "26 e 27 de Setembro" : "12 e 13 de Setembro";
 
     // 5. GERAR PDF DO INGRESSO
     let pdfBuffer: Buffer | undefined;
@@ -162,6 +165,7 @@ export async function issueTicketForOrder(orderId: string): Promise<{
         customerName,
         customerCpf,
         lotName,
+        eventDate: `${eventDateText} (Sáb 16h30 | Dom 15h30)`,
       });
 
       // Tentar salvar PDF no Supabase Storage
@@ -194,6 +198,7 @@ export async function issueTicketForOrder(orderId: string): Promise<{
       customer_email: customerEmail,
       customer_cpf: customerCpf,
       lot_name: lotName,
+      turma: turma,
       created_at: nowIso,
       updated_at: nowIso,
     };
@@ -215,6 +220,7 @@ export async function issueTicketForOrder(orderId: string): Promise<{
           issued_at: nowIso,
           email_sent: false,
           pdf_url: pdfUrl,
+          turma: turma,
         })
         .select("*")
         .single();
@@ -267,6 +273,8 @@ async function sendEmailForTicket(
   const targetEmail = emailOverride || ticket.customer_email;
   const targetName = nameOverride || ticket.customer_name || "Participante";
   const targetLot = lotOverride || ticket.lot_name || "Imersão Método Maestro";
+  const targetTurma = ticket.turma || "turma_1";
+  const eventDateText = targetTurma === "turma_2" ? "26 e 27 de Setembro" : "12 e 13 de Setembro";
 
   if (!targetEmail) {
     console.warn("[TicketService Email Warning]: E-mail do cliente não informado.");
@@ -279,6 +287,7 @@ async function sendEmailForTicket(
     ticketCode: ticket.ticket_code,
     qrToken: ticket.qr_token,
     lotName: targetLot,
+    eventDate: `${eventDateText} (Sáb 16h30 | Dom 15h30)`,
     pdfBuffer,
     pdfUrl: ticket.pdf_url,
   });
@@ -312,7 +321,7 @@ export async function getTicketByQRToken(qrToken: string): Promise<TicketRecord 
   if (isSupabaseConfigured) {
     const { data, error } = await supabaseAdmin
       .from("tickets")
-      .select("*, orders(customer_name, customer_email, customer_cpf, lot_name)")
+      .select("*, orders(customer_name, customer_email, customer_cpf, lot_name, turma)")
       .eq("qr_token", qrToken)
       .maybeSingle();
 
@@ -324,6 +333,7 @@ export async function getTicketByQRToken(qrToken: string): Promise<TicketRecord 
         customer_email: orderInfo.customer_email || "",
         customer_cpf: orderInfo.customer_cpf || "",
         lot_name: orderInfo.lot_name || "Imersão Método Maestro",
+        turma: data.turma || orderInfo.turma || "turma_1",
       } as TicketRecord;
     }
   }
@@ -340,7 +350,7 @@ export async function getTicketByIdOrCode(identifier: string): Promise<TicketRec
     const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(identifier);
     let query = supabaseAdmin
       .from("tickets")
-      .select("*, orders(customer_name, customer_email, customer_cpf, lot_name)");
+      .select("*, orders(customer_name, customer_email, customer_cpf, lot_name, turma)");
 
     if (isUuid) {
       query = query.or(`id.eq.${identifier},ticket_code.eq.${identifier}`);
@@ -358,6 +368,7 @@ export async function getTicketByIdOrCode(identifier: string): Promise<TicketRec
         customer_email: orderInfo.customer_email || "",
         customer_cpf: orderInfo.customer_cpf || "",
         lot_name: orderInfo.lot_name || "Imersão Método Maestro",
+        turma: data.turma || orderInfo.turma || "turma_1",
       } as TicketRecord;
     }
   }
@@ -376,7 +387,7 @@ export async function getAllTickets(): Promise<TicketRecord[]> {
   if (isSupabaseConfigured) {
     const { data, error } = await supabaseAdmin
       .from("tickets")
-      .select("*, orders(customer_name, customer_email, customer_cpf, lot_name)")
+      .select("*, orders(customer_name, customer_email, customer_cpf, lot_name, turma)")
       .order("created_at", { ascending: false });
 
     if (!error && data) {
@@ -386,6 +397,7 @@ export async function getAllTickets(): Promise<TicketRecord[]> {
         customer_email: t.orders?.customer_email || "",
         customer_cpf: t.orders?.customer_cpf || "",
         lot_name: t.orders?.lot_name || "Imersão Método Maestro",
+        turma: t.turma || t.orders?.turma || "turma_1",
       })) as TicketRecord[];
     }
   }

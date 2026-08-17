@@ -27,6 +27,7 @@ interface TicketData {
   pdf_url?: string | null;
   customer_name: string;
   lot_name: string;
+  turma?: string;
   event_date: string;
   event_location: string;
   qrCodeBase64: string;

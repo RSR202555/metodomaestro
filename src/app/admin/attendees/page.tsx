@@ -10,6 +10,7 @@ interface Attendee {
   customer_cpf: string;
   customer_phone?: string;
   lot_name: string;
+  turma?: string;
   paid_at?: string;
   created_at: string;
 }
@@ -47,17 +48,28 @@ export default function AdminAttendeesPage() {
     return () => clearInterval(interval);
   }, []);
 
-  const filteredAttendees = attendees.filter(
-    (att) =>
+  const [turmaFilter, setTurmaFilter] = useState<"all" | "turma_1" | "turma_2">("all");
+
+  const filteredAttendees = attendees.filter((att) => {
+    const matchesSearch =
       att.customer_name.toLowerCase().includes(search.toLowerCase()) ||
       att.customer_email.toLowerCase().includes(search.toLowerCase()) ||
-      att.customer_cpf.includes(search)
-  );
+      att.customer_cpf.includes(search);
+
+    const matchesTurma =
+      turmaFilter === "all"
+        ? true
+        : turmaFilter === "turma_2"
+        ? att.turma === "turma_2"
+        : att.turma === "turma_1" || !att.turma;
+
+    return matchesSearch && matchesTurma;
+  });
 
   const handleExportCSV = () => {
     if (filteredAttendees.length === 0) return;
 
-    const headers = ["ID", "Nome Completo", "E-mail", "CPF", "Telefone", "Lote", "Data Pagamento"];
+    const headers = ["ID", "Nome Completo", "E-mail", "CPF", "Telefone", "Lote", "Turma", "Data Pagamento"];
     const rows = filteredAttendees.map((att) => [
       att.id,
       `"${att.customer_name}"`,
@@ -65,6 +77,7 @@ export default function AdminAttendeesPage() {
       `"${att.customer_cpf}"`,
       `"${att.customer_phone || ""}"`,
       `"${att.lot_name}"`,
+      `"${att.turma === "turma_2" ? "Turma 2 (26 e 27/Set)" : "Turma 1 (12 e 13/Set)"}"`,
       att.paid_at ? new Date(att.paid_at).toLocaleString("pt-BR") : "",
     ]);
 
@@ -105,8 +118,8 @@ export default function AdminAttendeesPage() {
           </button>
         </div>
 
-        {/* CAMPO DE BUSCA */}
-        <div className="bg-[#141414] border border-white/10 rounded-2xl p-4">
+        {/* CAMPO DE BUSCA E FILTROS DE TURMA */}
+        <div className="bg-[#141414] border border-white/10 rounded-2xl p-4 space-y-3">
           <div className="relative">
             <span className="material-symbols-outlined absolute left-3 top-3 text-gray-400 text-xl">
               search
@@ -118,6 +131,40 @@ export default function AdminAttendeesPage() {
               onChange={(e) => setSearch(e.target.value)}
               className="w-full bg-[#1a1a1a] border border-white/10 text-white text-xs sm:text-sm rounded-xl pl-10 pr-4 py-2.5 outline-none focus:border-primary transition-all placeholder:text-gray-500"
             />
+          </div>
+
+          <div className="flex items-center gap-2 pt-1 overflow-x-auto">
+            <span className="text-xs text-gray-400 font-bold uppercase tracking-wider mr-1">Filtrar Turma:</span>
+            <button
+              onClick={() => setTurmaFilter("all")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                turmaFilter === "all"
+                  ? "bg-primary text-black"
+                  : "bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10"
+              }`}
+            >
+              Todas as Turmas ({attendees.length})
+            </button>
+            <button
+              onClick={() => setTurmaFilter("turma_1")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                turmaFilter === "turma_1"
+                  ? "bg-primary text-black"
+                  : "bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10"
+              }`}
+            >
+              Turma 1 — 12/13 Set ({attendees.filter(a => a.turma === "turma_1" || !a.turma).length})
+            </button>
+            <button
+              onClick={() => setTurmaFilter("turma_2")}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
+                turmaFilter === "turma_2"
+                  ? "bg-primary text-black"
+                  : "bg-white/5 border border-white/10 text-gray-300 hover:bg-white/10"
+              }`}
+            >
+              Turma 2 — 26/27 Set ({attendees.filter(a => a.turma === "turma_2").length})
+            </button>
           </div>
         </div>
 
@@ -159,9 +206,15 @@ export default function AdminAttendeesPage() {
                         {att.customer_phone || "Não informado"}
                       </td>
                       <td className="py-4 px-4">
-                        <span className="bg-primary/10 border border-primary/30 text-primary text-[10px] uppercase font-bold px-2.5 py-1 rounded-full">
-                          GARANTIDO (LOTE 1)
-                        </span>
+                        {att.turma === "turma_2" ? (
+                          <span className="bg-purple-500/10 border border-purple-500/30 text-purple-400 text-[10px] uppercase font-bold px-2.5 py-1 rounded-full">
+                            TURMA 2 (26 e 27/SET)
+                          </span>
+                        ) : (
+                          <span className="bg-primary/10 border border-primary/30 text-primary text-[10px] uppercase font-bold px-2.5 py-1 rounded-full">
+                            TURMA 1 (12 e 13/SET)
+                          </span>
+                        )}
                       </td>
                       <td className="py-4 px-4 text-gray-400 text-xs">
                         {att.paid_at

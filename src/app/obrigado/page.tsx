@@ -28,6 +28,7 @@ function ThankYouContent() {
     isPaid: boolean;
     customerEmail?: string;
     customerName?: string;
+    turma?: string;
     ticket?: {
       ticket_code: string;
       qr_token: string;
@@ -58,6 +59,7 @@ function ThankYouContent() {
             isPaid: data.isPaid,
             customerEmail: data.customerEmail,
             customerName: data.customerName,
+            turma: data.turma,
             ticket: data.ticket,
           });
 
@@ -195,8 +197,12 @@ function ThankYouContent() {
             <div className="bg-[#1c1c1c] border border-white/5 rounded-2xl p-4 flex items-start gap-3">
               <Calendar className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
               <div>
-                <span className="text-gray-400 block text-[11px] uppercase font-bold">Data</span>
-                <strong className="text-white">12, 13, 26 e 27 de Setembro</strong>
+                <span className="text-gray-400 block text-[11px] uppercase font-bold">Data & Turma</span>
+                <strong className="text-white">
+                  {orderState.turma === "turma_2"
+                    ? "26 e 27 de Setembro (Turma 2)"
+                    : "12 e 13 de Setembro (Turma 1)"}
+                </strong>
               </div>
             </div>
 

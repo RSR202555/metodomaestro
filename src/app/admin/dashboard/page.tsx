@@ -11,9 +11,10 @@ interface Order {
   customer_cpf: string;
   customer_phone?: string;
   lot_name: string;
+  turma?: string;
   amount: number;
   payment_method: string;
-  status: "pending" | "paid" | "cancelled" | "refunded";
+  status: "pending" | "paid" | "approved" | "cancelled" | "refunded";
   created_at: string;
   paid_at?: string;
 }
@@ -50,9 +51,12 @@ export default function AdminDashboardPage() {
     .filter((o) => o.status === "paid")
     .reduce((acc, curr) => acc + Number(curr.amount || 0), 0);
 
-  const paidCount = orders.filter((o) => o.status === "paid").length;
+  const paidCount = orders.filter((o) => o.status === "paid" || o.status === "approved").length;
   const pendingCount = orders.filter((o) => o.status === "pending").length;
   const totalOrdersCount = orders.length;
+
+  const t1PaidCount = orders.filter((o) => (o.status === "paid" || o.status === "approved") && (o.turma === "turma_1" || !o.turma)).length;
+  const t2PaidCount = orders.filter((o) => (o.status === "paid" || o.status === "approved") && o.turma === "turma_2").length;
 
   const conversionRate = totalOrdersCount > 0 ? ((paidCount / totalOrdersCount) * 100).toFixed(1) : "0";
 
@@ -135,6 +139,77 @@ export default function AdminDashboardPage() {
             <p className="text-[11px] text-gray-400 mt-2">
               Inscrições concluídas / iniciadas
             </p>
+          </div>
+        </div>
+
+        {/* CARD DE OCUPAÇÃO DAS TURMAS */}
+        <div className="bg-[#141414] border border-white/10 rounded-2xl p-6">
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <h3 className="font-geist text-lg font-bold text-white flex items-center gap-2">
+                <span className="material-symbols-outlined text-primary">groups</span>
+                Ocupação de Vagas por Turma (Limite: 30 Vagas/Turma)
+              </h3>
+              <p className="text-xs text-gray-400 mt-0.5">
+                Controle em tempo real de inscritos confirmados em cada uma das turmas
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+            {/* Turma 1 */}
+            <div className="bg-[#1a1a1a] border border-primary/30 rounded-2xl p-5 gold-glow">
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <span className="text-[10px] font-extrabold uppercase bg-primary/10 border border-primary/30 text-primary px-2.5 py-0.5 rounded-full">
+                    TURMA 1
+                  </span>
+                  <h4 className="font-geist text-base font-bold text-white mt-1">
+                    12 e 13 de Setembro
+                  </h4>
+                </div>
+                <span className="font-extrabold font-mono text-lg text-primary">
+                  {t1PaidCount} / 30
+                </span>
+              </div>
+
+              <div className="w-full h-2.5 bg-white/10 rounded-full overflow-hidden border border-white/10 mt-3">
+                <div
+                  className="h-full bg-primary rounded-full transition-all"
+                  style={{ width: `${Math.min(100, (t1PaidCount / 30) * 100)}%` }}
+                ></div>
+              </div>
+              <p className="text-[11px] text-gray-400 mt-2 text-right">
+                {30 - t1PaidCount > 0 ? `${30 - t1PaidCount} vagas restantes` : "ESGOTADA"}
+              </p>
+            </div>
+
+            {/* Turma 2 */}
+            <div className="bg-[#1a1a1a] border border-purple-500/30 rounded-2xl p-5">
+              <div className="flex justify-between items-start mb-2">
+                <div>
+                  <span className="text-[10px] font-extrabold uppercase bg-purple-500/10 border border-purple-500/30 text-purple-400 px-2.5 py-0.5 rounded-full">
+                    TURMA 2
+                  </span>
+                  <h4 className="font-geist text-base font-bold text-white mt-1">
+                    26 e 27 de Setembro
+                  </h4>
+                </div>
+                <span className="font-extrabold font-mono text-lg text-purple-400">
+                  {t2PaidCount} / 30
+                </span>
+              </div>
+
+              <div className="w-full h-2.5 bg-white/10 rounded-full overflow-hidden border border-white/10 mt-3">
+                <div
+                  className="h-full bg-purple-500 rounded-full transition-all"
+                  style={{ width: `${Math.min(100, (t2PaidCount / 30) * 100)}%` }}
+                ></div>
+              </div>
+              <p className="text-[11px] text-gray-400 mt-2 text-right">
+                {30 - t2PaidCount > 0 ? `${30 - t2PaidCount} vagas restantes` : "ESGOTADA"}
+              </p>
+            </div>
           </div>
         </div>
 

@@ -42,6 +42,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     { label: "Ingressos Emitidos", href: "/admin/tickets", icon: "qr_code_2" },
     { label: "Participantes", href: "/admin/attendees", icon: "badge" },
     { label: "Lotes", href: "/admin/lots", icon: "confirmation_number" },
+    { label: "Cupons de Desconto", href: "/admin/coupons", icon: "local_offer" },
   ];
 
   if (checkingAuth) {
