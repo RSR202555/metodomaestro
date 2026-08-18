@@ -79,6 +79,46 @@ export default function AdminOrdersPage() {
     }
   };
 
+  const handleDeleteOrder = async (orderId: string, customerName: string) => {
+    if (!confirm(`Tem certeza de que deseja excluir a inscrição de "${customerName}"?`)) return;
+
+    try {
+      const res = await fetch(`/api/admin/orders?id=${orderId}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        setOrders((prev) => prev.filter((o) => o.id !== orderId));
+      }
+    } catch (err) {
+      console.error("Erro ao excluir pedido:", err);
+    }
+  };
+
+  const handleCleanPending = async () => {
+    const pendingCount = orders.filter((o) => o.status === "pending").length;
+    if (pendingCount === 0) {
+      alert("Não há nenhuma inscrição pendente para excluir.");
+      return;
+    }
+
+    if (!confirm(`Deseja realmente excluir TODAS as ${pendingCount} inscrições pendentes/não pagas de teste?`)) {
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/admin/orders?cleanPending=true", {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        setOrders((prev) => prev.filter((o) => o.status !== "pending"));
+      }
+    } catch (err) {
+      console.error("Erro ao limpar pedidos pendentes:", err);
+    }
+  };
+
   const filteredOrders = orders.filter((order) => {
     const matchesSearch =
       order.customer_name.toLowerCase().includes(search.toLowerCase()) ||
@@ -104,13 +144,24 @@ export default function AdminOrdersPage() {
             </p>
           </div>
 
-          <button
-            onClick={fetchOrders}
-            className="self-start md:self-auto bg-white/5 border border-white/10 text-gray-300 hover:text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all"
-          >
-            <span className="material-symbols-outlined text-base">refresh</span>
-            <span>Atualizar Dados</span>
-          </button>
+          <div className="flex items-center gap-2 self-start md:self-auto">
+            <button
+              onClick={handleCleanPending}
+              className="bg-red-500/10 border border-red-500/30 text-red-400 hover:bg-red-500/20 px-3.5 py-2 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all"
+              title="Excluir todas as inscrições pendentes de teste"
+            >
+              <span className="material-symbols-outlined text-base">delete_sweep</span>
+              <span>Limpar Pendentes</span>
+            </button>
+
+            <button
+              onClick={fetchOrders}
+              className="bg-white/5 border border-white/10 text-gray-300 hover:text-white px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all"
+            >
+              <span className="material-symbols-outlined text-base">refresh</span>
+              <span>Atualizar Dados</span>
+            </button>
+          </div>
         </div>
 
         {/* CONTROLES DE FILTRO E PESQUISA */}
@@ -232,17 +283,25 @@ export default function AdminOrdersPage() {
                         )}
                       </td>
                       <td className="py-4 px-4 text-right">
-                        {order.status === "pending" ? (
+                        <div className="flex items-center justify-end gap-2">
+                          {order.status === "pending" && (
+                            <button
+                              onClick={() => handleUpdateStatus(order.id, "paid")}
+                              disabled={updatingId === order.id}
+                              className="bg-green-500/20 hover:bg-green-500/30 border border-green-500/40 text-green-300 font-bold text-[11px] uppercase px-3 py-1.5 rounded-lg transition-all"
+                            >
+                              {updatingId === order.id ? "Aprovando..." : "Marcar como Pago"}
+                            </button>
+                          )}
+
                           <button
-                            onClick={() => handleUpdateStatus(order.id, "paid")}
-                            disabled={updatingId === order.id}
-                            className="bg-green-500/20 hover:bg-green-500/30 border border-green-500/40 text-green-300 font-bold text-[11px] uppercase px-3 py-1.5 rounded-lg transition-all"
+                            onClick={() => handleDeleteOrder(order.id, order.customer_name)}
+                            className="p-1.5 bg-white/5 hover:bg-red-500/20 text-gray-400 hover:text-red-400 rounded-lg border border-white/10 transition-all"
+                            title="Excluir esta Inscrição"
                           >
-                            {updatingId === order.id ? "Aprovando..." : "Marcar como Pago"}
+                            <span className="material-symbols-outlined text-base">delete</span>
                           </button>
-                        ) : (
-                          <span className="text-[11px] text-gray-500">Concluído</span>
-                        )}
+                        </div>
                       </td>
                     </tr>
                   ))}

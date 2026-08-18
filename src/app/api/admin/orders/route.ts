@@ -112,3 +112,59 @@ export async function PATCH(req: Request) {
     );
   }
 }
+
+export async function DELETE(req: Request) {
+  try {
+    const url = new URL(req.url);
+    const orderId = url.searchParams.get("id");
+    const cleanPending = url.searchParams.get("cleanPending") === "true";
+
+    if (cleanPending) {
+      IN_MEMORY_ORDERS = IN_MEMORY_ORDERS.filter((o) => o.status !== "pending");
+
+      try {
+        const { data: pendingOrders } = await supabaseAdmin
+          .from("orders")
+          .select("id")
+          .eq("status", "pending");
+
+        if (pendingOrders && pendingOrders.length > 0) {
+          const pendingIds = pendingOrders.map((o) => o.id);
+          await supabaseAdmin.from("tickets").delete().in("order_id", pendingIds);
+          await supabaseAdmin.from("orders").delete().eq("status", "pending");
+        }
+      } catch (e) {
+        console.warn("[Clean Pending Orders Supabase Warning]:", e);
+      }
+
+      return NextResponse.json({
+        success: true,
+        message: "Todas as inscrições pendentes foram excluídas com sucesso.",
+      });
+    }
+
+    if (!orderId) {
+      return NextResponse.json(
+        { error: "ID da inscrição é obrigatório." },
+        { status: 400 }
+      );
+    }
+
+    IN_MEMORY_ORDERS = IN_MEMORY_ORDERS.filter((o) => o.id !== orderId);
+
+    try {
+      await supabaseAdmin.from("tickets").delete().eq("order_id", orderId);
+      await supabaseAdmin.from("orders").delete().eq("id", orderId);
+    } catch (e) {
+      console.warn("[Delete Order Supabase Warning]:", e);
+    }
+
+    return NextResponse.json({ success: true, orderId });
+  } catch (error: any) {
+    console.error("[DELETE Order Error]:", error);
+    return NextResponse.json(
+      { error: error?.message || "Erro ao excluir inscrição" },
+      { status: 500 }
+    );
+  }
+}
