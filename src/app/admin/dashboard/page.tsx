@@ -37,8 +37,46 @@ export default function AdminDashboardPage() {
     }
   };
 
+  const [turma2Active, setTurma2Active] = useState(false);
+  const [togglingTurma2, setTogglingTurma2] = useState(false);
+
+  const fetchTurmasStatus = async () => {
+    try {
+      const res = await fetch("/api/turmas");
+      const data = await res.json();
+      if (data?.turmas) {
+        const t2 = data.turmas.find((t: any) => t.id === "turma_2");
+        if (t2) setTurma2Active(Boolean(t2.active));
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  const handleToggleTurma2 = async () => {
+    setTogglingTurma2(true);
+    try {
+      const res = await fetch("/api/turmas", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          turmaId: "turma_2",
+          active: !turma2Active,
+        }),
+      });
+      if (res.ok) {
+        setTurma2Active(!turma2Active);
+      }
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setTogglingTurma2(false);
+    }
+  };
+
   useEffect(() => {
     fetchOrders();
+    fetchTurmasStatus();
     // Atualização automática em tempo real a cada 3 segundos
     const interval = setInterval(() => {
       fetchOrders();
@@ -185,30 +223,64 @@ export default function AdminDashboardPage() {
             </div>
 
             {/* Turma 2 */}
-            <div className="bg-[#1a1a1a] border border-purple-500/30 rounded-2xl p-5">
-              <div className="flex justify-between items-start mb-2">
-                <div>
-                  <span className="text-[10px] font-extrabold uppercase bg-purple-500/10 border border-purple-500/30 text-purple-400 px-2.5 py-0.5 rounded-full">
-                    TURMA 2
+            <div className="bg-[#1a1a1a] border border-purple-500/30 rounded-2xl p-5 flex flex-col justify-between">
+              <div>
+                <div className="flex justify-between items-start mb-2">
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-[10px] font-extrabold uppercase bg-purple-500/10 border border-purple-500/30 text-purple-400 px-2.5 py-0.5 rounded-full">
+                        TURMA 2
+                      </span>
+                      {turma2Active ? (
+                        <span className="text-[10px] uppercase font-bold bg-green-500/10 border border-green-500/30 text-green-400 px-2 py-0.5 rounded-full">
+                          Visível no Checkout
+                        </span>
+                      ) : (
+                        <span className="text-[10px] uppercase font-bold bg-amber-500/10 border border-amber-500/30 text-amber-400 px-2 py-0.5 rounded-full">
+                          Oculta no Checkout
+                        </span>
+                      )}
+                    </div>
+                    <h4 className="font-geist text-base font-bold text-white mt-1">
+                      26 e 27 de Setembro
+                    </h4>
+                  </div>
+                  <span className="font-extrabold font-mono text-lg text-purple-400">
+                    {t2PaidCount} / 30
                   </span>
-                  <h4 className="font-geist text-base font-bold text-white mt-1">
-                    26 e 27 de Setembro
-                  </h4>
                 </div>
-                <span className="font-extrabold font-mono text-lg text-purple-400">
-                  {t2PaidCount} / 30
-                </span>
+
+                <div className="w-full h-2.5 bg-white/10 rounded-full overflow-hidden border border-white/10 mt-3">
+                  <div
+                    className="h-full bg-purple-500 rounded-full transition-all"
+                    style={{ width: `${Math.min(100, (t2PaidCount / 30) * 100)}%` }}
+                  ></div>
+                </div>
+                <p className="text-[11px] text-gray-400 mt-2 text-right">
+                  {30 - t2PaidCount > 0 ? `${30 - t2PaidCount} vagas restantes` : "ESGOTADA"}
+                </p>
               </div>
 
-              <div className="w-full h-2.5 bg-white/10 rounded-full overflow-hidden border border-white/10 mt-3">
-                <div
-                  className="h-full bg-purple-500 rounded-full transition-all"
-                  style={{ width: `${Math.min(100, (t2PaidCount / 30) * 100)}%` }}
-                ></div>
+              <div className="mt-4 pt-3 border-t border-white/10 flex items-center justify-between">
+                <span className="text-xs text-gray-300 font-medium">
+                  {turma2Active ? "Turma 2 está Aberta" : "Turma 2 está Fechada"}
+                </span>
+                <button
+                  onClick={handleToggleTurma2}
+                  disabled={togglingTurma2}
+                  className={`px-3 py-1.5 rounded-xl text-xs font-bold uppercase transition-all cursor-pointer ${
+                    turma2Active
+                      ? "bg-amber-500/15 border border-amber-500/30 text-amber-400 hover:bg-amber-500/25"
+                      : "bg-purple-500/20 border border-purple-500/40 text-purple-300 hover:bg-purple-500/30 shadow-[0_0_15px_rgba(168,85,247,0.3)]"
+                  }`}
+                >
+                  {togglingTurma2
+                    ? "Atualizando..."
+                    : turma2Active
+                    ? "Ocultar Turma 2"
+                    : "Liberar / Exibir Turma 2"}
+                </button>
               </div>
-              <p className="text-[11px] text-gray-400 mt-2 text-right">
-                {30 - t2PaidCount > 0 ? `${30 - t2PaidCount} vagas restantes` : "ESGOTADA"}
-              </p>
             </div>
           </div>
         </div>

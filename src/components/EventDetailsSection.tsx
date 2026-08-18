@@ -1,16 +1,34 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Calendar, MapPin, Clock } from "lucide-react";
 
 export default function EventDetailsSection() {
+  const [hasMultipleTurmas, setHasMultipleTurmas] = useState(false);
+
+  useEffect(() => {
+    fetch("/api/turmas")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data?.turmas) {
+          const activeTurmas = data.turmas.filter((t: any) => t.active !== false);
+          setHasMultipleTurmas(activeTurmas.length > 1);
+        }
+      })
+      .catch((e) => console.warn(e));
+  }, []);
+
   const cards = [
     {
       icon: Calendar,
-      label: "TURMAS DISPONÍVEIS",
-      title: "Turma 1: 12 e 13 / Turma 2: 26 e 27",
-      subtitle: "Setembro — 30 vagas por turma",
+      label: hasMultipleTurmas ? "TURMAS DISPONÍVEIS" : "DATA DO EVENTO",
+      title: hasMultipleTurmas
+        ? "Turma 1: 12 e 13 / Turma 2: 26 e 27"
+        : "12 e 13 de Setembro",
+      subtitle: hasMultipleTurmas
+        ? "Setembro — 30 vagas por turma"
+        : "Imersão Presencial — 30 vagas disponíveis",
     },
     {
       icon: MapPin,
@@ -67,4 +85,3 @@ export default function EventDetailsSection() {
     </section>
   );
 }
-

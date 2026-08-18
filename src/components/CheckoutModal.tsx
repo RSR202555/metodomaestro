@@ -380,60 +380,95 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
             </div>
 
             {/* SELEÇÃO DE TURMA */}
-            <div className="mb-6">
-              <div className="flex items-center justify-between mb-2">
-                <label className="block text-xs font-bold text-on-surface-variant uppercase tracking-wider">
-                  SELEÇÃO DE TURMA (30 VAGAS POR TURMA) *
-                </label>
-                <span className="text-[11px] text-primary font-bold">
-                  Limite Estrito
-                </span>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {turmasList.map((t) => {
-                  const isSelected = turma === t.id;
-                  const isSoldOut = t.esgotada;
-
-                  return (
-                    <button
-                      key={t.id}
-                      type="button"
-                      disabled={isSoldOut}
-                      onClick={() => !isSoldOut && setTurma(t.id as any)}
-                      className={`p-3.5 rounded-2xl border text-left transition-all relative cursor-pointer ${
-                        isSoldOut
-                          ? "opacity-50 border-white/10 bg-white/5 cursor-not-allowed"
-                          : isSelected
-                          ? "border-primary bg-primary/10 shadow-[0_0_20px_rgba(242,202,80,0.25)]"
-                          : "border-white/10 bg-[#1a1a1a] hover:border-white/30"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="text-xs font-bold text-white uppercase tracking-wider font-geist">
-                          {t.id === "turma_1" ? "TURMA 1" : "TURMA 2"}
-                        </span>
-                        {isSoldOut ? (
-                          <span className="text-[10px] uppercase font-extrabold bg-red-500/20 border border-red-500/40 text-red-400 px-2 py-0.5 rounded-full">
-                            ESGOTADA
+            {(() => {
+              const activeTurmas = turmasList.filter((t) => t.active !== false);
+              if (activeTurmas.length <= 1) {
+                const t1 = activeTurmas[0] || turmasList[0];
+                return (
+                  <div className="mb-6">
+                    <label className="block text-xs font-bold text-on-surface-variant uppercase tracking-wider mb-2">
+                      TURMA CONFIRMADA (30 VAGAS MAX) *
+                    </label>
+                    <div className="bg-[#1a1a1a] border border-primary/40 rounded-2xl p-4 flex items-center justify-between shadow-[0_0_15px_rgba(212,175,55,0.15)]">
+                      <div>
+                        <div className="flex items-center gap-2 mb-1">
+                          <span className="text-xs font-extrabold text-primary uppercase tracking-wider font-geist">
+                            TURMA 1
                           </span>
-                        ) : (
                           <span className="text-[10px] uppercase font-bold bg-green-500/15 border border-green-500/30 text-green-400 px-2 py-0.5 rounded-full">
-                            {t.vagasDisponiveis} vagas
+                            {t1?.vagasDisponiveis ?? 30} vagas restantes
                           </span>
-                        )}
+                        </div>
+                        <p className="text-base font-extrabold text-white font-geist">
+                          {t1?.dates || "12 e 13 de Setembro"}
+                        </p>
+                        <p className="text-xs text-gray-400 mt-0.5">
+                          Imersão Presencial • World Gym Pro (Salvador)
+                        </p>
                       </div>
-                      <p className="text-sm font-extrabold text-primary font-geist">
-                        {t.dates}
-                      </p>
-                      <p className="text-[11px] text-gray-400 mt-0.5">
-                        Imersão Presencial (Sáb & Dom)
-                      </p>
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
+                      <CheckCircle2 className="w-6 h-6 text-primary flex-shrink-0" />
+                    </div>
+                  </div>
+                );
+              }
+
+              return (
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-xs font-bold text-on-surface-variant uppercase tracking-wider">
+                      SELEÇÃO DE TURMA (30 VAGAS POR TURMA) *
+                    </label>
+                    <span className="text-[11px] text-primary font-bold">
+                      Limite Estrito
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    {activeTurmas.map((t) => {
+                      const isSelected = turma === t.id;
+                      const isSoldOut = t.esgotada;
+
+                      return (
+                        <button
+                          key={t.id}
+                          type="button"
+                          disabled={isSoldOut}
+                          onClick={() => !isSoldOut && setTurma(t.id as any)}
+                          className={`p-3.5 rounded-2xl border text-left transition-all relative cursor-pointer ${
+                            isSoldOut
+                              ? "opacity-50 border-white/10 bg-white/5 cursor-not-allowed"
+                              : isSelected
+                              ? "border-primary bg-primary/10 shadow-[0_0_20px_rgba(242,202,80,0.25)]"
+                              : "border-white/10 bg-[#1a1a1a] hover:border-white/30"
+                          }`}
+                        >
+                          <div className="flex items-center justify-between mb-1">
+                            <span className="text-xs font-bold text-white uppercase tracking-wider font-geist">
+                              {t.id === "turma_1" ? "TURMA 1" : "TURMA 2"}
+                            </span>
+                            {isSoldOut ? (
+                              <span className="text-[10px] uppercase font-extrabold bg-red-500/20 border border-red-500/40 text-red-400 px-2 py-0.5 rounded-full">
+                                ESGOTADA
+                              </span>
+                            ) : (
+                              <span className="text-[10px] uppercase font-bold bg-green-500/15 border border-green-500/30 text-green-400 px-2 py-0.5 rounded-full">
+                                {t.vagasDisponiveis} vagas
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-sm font-extrabold text-primary font-geist">
+                            {t.dates}
+                          </p>
+                          <p className="text-[11px] text-gray-400 mt-0.5">
+                            Imersão Presencial (Sáb & Dom)
+                          </p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
 
             {/* SELEÇÃO DE CUPOM DE DESCONTO */}
             <div className="mb-6">
