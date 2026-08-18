@@ -253,9 +253,10 @@ export default function AdminDashboardPage() {
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs sm:text-sm">
                 <thead>
-                  <tr className="border-b border-white/10 text-gray-400 font-semibold uppercase tracking-wider">
+                    <tr className="border-b border-white/10 text-gray-400 font-semibold uppercase tracking-wider">
                     <th className="pb-3 px-3">Comprador</th>
                     <th className="pb-3 px-3">E-mail / Telefone</th>
+                    <th className="pb-3 px-3">Turma</th>
                     <th className="pb-3 px-3">Valor</th>
                     <th className="pb-3 px-3">Método</th>
                     <th className="pb-3 px-3">Status</th>
@@ -263,7 +264,7 @@ export default function AdminDashboardPage() {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-white/5">
-                  {orders.slice(0, 5).map((order) => (
+                  {orders.slice(0, 10).map((order) => (
                     <tr key={order.id} className="hover:bg-white/5 transition-colors">
                       <td className="py-4 px-3 font-semibold text-white">
                         {order.customer_name}
@@ -271,6 +272,17 @@ export default function AdminDashboardPage() {
                       <td className="py-4 px-3 text-gray-300">
                         <div>{order.customer_email}</div>
                         <div className="text-[11px] text-gray-500">{order.customer_phone || "-"}</div>
+                      </td>
+                      <td className="py-4 px-3">
+                        {order.turma === "turma_2" ? (
+                          <span className="bg-purple-500/10 border border-purple-500/30 text-purple-400 text-[10px] uppercase font-bold px-2 py-0.5 rounded-full inline-block">
+                            Turma 2 (26-27/Set)
+                          </span>
+                        ) : (
+                          <span className="bg-primary/10 border border-primary/30 text-primary text-[10px] uppercase font-bold px-2 py-0.5 rounded-full inline-block">
+                            Turma 1 (12-13/Set)
+                          </span>
+                        )}
                       </td>
                       <td className="py-4 px-3 font-bold text-primary">
                         {Number(order.amount).toLocaleString("pt-BR", {
