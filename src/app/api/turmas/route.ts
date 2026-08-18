@@ -4,7 +4,7 @@ import { isSupabaseConfigured } from "@/lib/supabase/client";
 
 export const dynamic = "force-dynamic";
 
-export const TURMAS_CONFIG = [
+const TURMAS_CONFIG = [
   {
     id: "turma_1",
     name: "Turma 1 — 12 e 13 de Setembro",

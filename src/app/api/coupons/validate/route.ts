@@ -1,42 +1,9 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
+import { IN_MEMORY_COUPONS } from "@/lib/constants/coupons";
 
 export const dynamic = "force-dynamic";
-
-// Cupons padrão em memória para ambiente local ou fallback
-export const IN_MEMORY_COUPONS = [
-  {
-    id: "c1",
-    code: "MAESTRO50",
-    discount_type: "percentage",
-    discount_value: 50.0,
-    max_uses: null,
-    used_count: 0,
-    active: true,
-    expires_at: null,
-  },
-  {
-    id: "c2",
-    code: "VIP20",
-    discount_type: "percentage",
-    discount_value: 20.0,
-    max_uses: 100,
-    used_count: 0,
-    active: true,
-    expires_at: null,
-  },
-  {
-    id: "c3",
-    code: "METODO50",
-    discount_type: "fixed",
-    discount_value: 50.0,
-    max_uses: null,
-    used_count: 0,
-    active: true,
-    expires_at: null,
-  },
-];
 
 export async function POST(req: Request) {
   try {

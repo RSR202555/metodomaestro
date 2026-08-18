@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
-import { IN_MEMORY_COUPONS } from "@/app/api/coupons/validate/route";
+import { IN_MEMORY_COUPONS, CouponData } from "@/lib/constants/coupons";
 
 export const dynamic = "force-dynamic";
 
-let LOCAL_COUPONS = [...IN_MEMORY_COUPONS];
+let LOCAL_COUPONS: CouponData[] = [...IN_MEMORY_COUPONS];
 
 export async function GET() {
   try {
@@ -49,17 +49,17 @@ export async function POST(req: Request) {
       );
     }
 
-    const newCoupon = {
+    const typeVal: "percentage" | "fixed" = discount_type === "fixed" ? "fixed" : "percentage";
+
+    const newCoupon: CouponData = {
       id: "cpn_" + Math.random().toString(36).substring(2, 10),
       code: cleanCode,
-      discount_type: discount_type === "fixed" ? "fixed" : "percentage",
+      discount_type: typeVal,
       discount_value: parsedValue,
       max_uses: max_uses ? Number(max_uses) : null,
       used_count: 0,
       active: Boolean(active),
       expires_at: expires_at || null,
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
     };
 
     LOCAL_COUPONS.unshift(newCoupon);

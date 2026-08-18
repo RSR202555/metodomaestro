@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase/admin";
 import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { createPixPayment, createCheckoutPreference } from "@/lib/mercadopago";
-import { IN_MEMORY_COUPONS } from "@/app/api/coupons/validate/route";
+import { IN_MEMORY_COUPONS } from "@/lib/constants/coupons";
 
 export const dynamic = "force-dynamic";
 
