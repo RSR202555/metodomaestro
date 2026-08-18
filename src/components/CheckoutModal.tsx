@@ -22,7 +22,7 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
     price: "R$ 297,00",
     numericPrice: 297.0,
     benefits: [
-      "Acesso aos Dias de Imersão Presencial (12, 13, 26 e 27 de Setembro na World Gym Pro)",
+      "Acesso aos 2 Dias de Imersão Presencial (12 e 13 de Setembro na World Gym Pro)",
       "Material de Apoio e Planilhas de Precificação",
       "Certificado Oficial de Conclusão",
       "Acesso ao Grupo Exclusivo de Avisos",
@@ -87,10 +87,17 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
                 currency: "BRL",
               });
 
-              const benefitsList = foundActive.description
-                ? foundActive.description.split("+").map((b: string) => b.trim())
+              const rawDesc = foundActive.description
+                ? foundActive.description
+                    .replace(/5 e 6 de Setembro/gi, "12 e 13 de Setembro")
+                    .replace(/5 e 6/gi, "12 e 13")
+                    .replace(/12, 13, 26 e 27 de Setembro/gi, "12 e 13 de Setembro")
+                : "";
+
+              const benefitsList = rawDesc
+                ? rawDesc.split("+").map((b: string) => b.trim())
                 : [
-                    "Acesso aos Dias de Imersão Presencial (12, 13, 26 e 27 de Setembro)",
+                    "Acesso aos 2 Dias de Imersão Presencial (12 e 13 de Setembro na World Gym Pro)",
                     "Material de Apoio e Planilhas de Precificação",
                     "Certificado Oficial de Conclusão",
                     "Acesso ao Grupo Exclusivo de Avisos",

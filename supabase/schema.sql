@@ -59,7 +59,7 @@ VALUES (
   'a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d',
   'Ingresso Método Maestro - Lote 1',
   297.00,
-  'Acesso aos Dias de Imersão Presencial (12, 13, 26 e 27 de Setembro na World Gym Pro)',
+  'Acesso aos 2 Dias de Imersão Presencial (12 e 13 de Setembro na World Gym Pro)',
   true,
   100,
   0
