@@ -7,9 +7,7 @@ import HeroSection from "@/components/HeroSection";
 import CountdownTimer from "@/components/CountdownTimer";
 import EventDetailsSection from "@/components/EventDetailsSection";
 import ProblemSection from "@/components/ProblemSection";
-import IncomeCalculator from "@/components/IncomeCalculator";
 import ActionSection from "@/components/ActionSection";
-import SocialProofGallery from "@/components/SocialProofGallery";
 import TestimonialsSection from "@/components/TestimonialsSection";
 import FaqSection from "@/components/FaqSection";
 import FinalCTASection from "@/components/FinalCTASection";
@@ -79,15 +77,6 @@ export default function Home() {
           <ProblemSection />
         </motion.div>
 
-        {/* 6. Interactive Income Calculator (Simulador de Faturamento) */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7 }}
-        >
-          <IncomeCalculator onOpenCheckout={openCheckout} />
-        </motion.div>
 
         {/* 7. Action Section */}
         <motion.div
@@ -99,15 +88,6 @@ export default function Home() {
           <ActionSection onOpenCheckout={openCheckout} />
         </motion.div>
 
-        {/* 8. Interactive Social Proof Lightbox Gallery */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-80px" }}
-          transition={{ duration: 0.7 }}
-        >
-          <SocialProofGallery onOpenCheckout={openCheckout} />
-        </motion.div>
 
         {/* 9. Testimonials Section */}
         <motion.div

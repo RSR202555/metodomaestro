@@ -79,6 +79,10 @@ export default function HeroSection({ onOpenVideo, onOpenCheckout }: HeroSection
               <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0" />
               <span>Posicionamento de alto valor e condução com autoridade</span>
             </div>
+            <div className="flex items-start gap-2.5">
+              <CheckCircle2 className="w-5 h-5 text-primary flex-shrink-0 mt-0.5" />
+              <span>Dois dias de evento: 12/09 às 16h30 (Teoria) e 13/09 às 15h30 (Prática)</span>
+            </div>
           </div>
         </div>
 

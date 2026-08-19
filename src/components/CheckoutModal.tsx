@@ -216,7 +216,12 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
         setCouponError(data.error || "Cupom inválido.");
         setAppliedCoupon(null);
       } else {
-        setAppliedCoupon(data);
+        setAppliedCoupon({
+          code: data.code || data.coupon?.code || couponInput.trim().toUpperCase(),
+          discountAmount: data.discountAmount,
+          finalAmount: data.finalAmount,
+          message: data.message,
+        });
         setCouponError("");
       }
     } catch (err: any) {
@@ -238,6 +243,8 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
     setLoading(true);
 
     try {
+      const couponToUse = appliedCoupon?.code || (couponInput.trim() ? couponInput.trim().toUpperCase() : undefined);
+
       const res = await fetch("/api/checkout/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -248,7 +255,7 @@ export default function CheckoutModal({ isOpen, onClose }: CheckoutModalProps) {
           phone,
           paymentMethod,
           turma,
-          couponCode: appliedCoupon?.code || undefined,
+          couponCode: couponToUse,
         }),
       });
 

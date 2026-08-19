@@ -39,8 +39,8 @@ export default function EventDetailsSection() {
     {
       icon: Clock,
       label: "HORÁRIOS",
-      title: "Sáb 16h30 | Dom 15h30",
-      subtitle: "Sábados às 16h30 & Domingos às 15h30",
+      title: "12/09 às 16h30 | 13/09 às 15h30",
+      subtitle: "Dia 12 (Teoria às 16h30) & Dia 13 (Prática às 15h30)",
     },
   ];
 

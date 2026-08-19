@@ -43,7 +43,7 @@ export async function createCheckoutPreference(params: PaymentParams) {
           {
             id: "ingresso-metodo-maestro",
             title: params.description,
-            unit_price: Number(params.transactionAmount),
+            unit_price: Number(Number(params.transactionAmount).toFixed(2)),
             quantity: 1,
             currency_id: "BRL",
           },
@@ -97,7 +97,7 @@ export async function createPixPayment(params: PaymentParams) {
       const cleanCpf = params.payerCpf.replace(/\D/g, "");
 
       const body: any = {
-        transaction_amount: Number(params.transactionAmount),
+        transaction_amount: Number(Number(params.transactionAmount).toFixed(2)),
         description: params.description,
         payment_method_id: "pix",
         payer: {

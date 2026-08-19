@@ -89,8 +89,8 @@ export async function POST(req: Request) {
               : Number(coupon.discount_value);
 
           // Limite estrito de no máximo 50% de desconto
-          discountAmount = Math.min(rawDisc, priceAmount * 0.5);
-          priceAmount = Math.max(0, priceAmount - discountAmount);
+          discountAmount = Number(Math.min(rawDisc, priceAmount * 0.5).toFixed(2));
+          priceAmount = Number(Math.max(0, priceAmount - discountAmount).toFixed(2));
           appliedCouponCode = coupon.code;
 
           // Incrementar contagem de usos
@@ -107,10 +107,14 @@ export async function POST(req: Request) {
     // Gerar UUID válido previamente para casar 1:1 o external_reference do Mercado Pago com o id da tabela no Supabase
     const orderId = crypto.randomUUID();
 
+    const displayDescription = appliedCouponCode
+      ? `${lotName} (Cupom ${appliedCouponCode})`
+      : lotName;
+
     // 1. Criar Preferência de Checkout Pro no Mercado Pago (Link de Redirecionamento Direto)
     const preference = await createCheckoutPreference({
       transactionAmount: priceAmount,
-      description: lotName,
+      description: displayDescription,
       payerEmail: email,
       payerName: name,
       payerCpf: cpf,
@@ -129,7 +133,7 @@ export async function POST(req: Request) {
     if (paymentMethod === "pix") {
       const pixPayment = await createPixPayment({
         transactionAmount: priceAmount,
-        description: lotName,
+        description: displayDescription,
         payerEmail: email,
         payerName: name,
         payerCpf: cpf,
