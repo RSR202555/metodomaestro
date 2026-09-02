@@ -19,14 +19,14 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
     try {
       const isAuth = localStorage.getItem("admin_authenticated");
       if (!isAuth && pathname !== "/admin/login") {
-        localStorage.setItem("admin_authenticated", "true");
+        router.push("/admin/login");
       }
     } catch (e) {
       console.error(e);
     } finally {
       setCheckingAuth(false);
     }
-  }, [pathname]);
+  }, [pathname, router]);
 
   const handleLogout = async () => {
     localStorage.removeItem("admin_authenticated");

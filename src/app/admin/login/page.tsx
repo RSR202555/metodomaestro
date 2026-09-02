@@ -32,9 +32,7 @@ export default function AdminLoginPage() {
       // Senha mestra / fallback de acesso administrativo
       if (
         password === "maestro2026!" ||
-        password === "maestro123" ||
-        password === "admin" ||
-        password.length >= 4
+        password === "maestro123"
       ) {
         localStorage.setItem("admin_authenticated", "true");
         window.location.href = "/admin/dashboard";
